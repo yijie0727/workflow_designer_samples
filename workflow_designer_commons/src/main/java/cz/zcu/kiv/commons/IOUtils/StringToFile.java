@@ -9,11 +9,12 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.Date;
 
 @BlockType(type="StringToFile",family = "IOUtils")
-public class StringToFile {
+public class StringToFile implements Serializable {
 
     @BlockInput(name="String", type=Type.STRING)
     private String stringInput;
@@ -22,8 +23,9 @@ public class StringToFile {
     private File fileOutput;
 
     @BlockExecute
-    public void process() throws IOException {
+    public File process() throws IOException {
         fileOutput = new File("file_"+new Date().getTime()+".tmp");
         FileUtils.writeStringToFile(fileOutput,stringInput,Charset.defaultCharset());
+        return fileOutput;
     }
 }

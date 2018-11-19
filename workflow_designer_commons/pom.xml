@@ -49,7 +49,7 @@
     <dependency>
       <groupId>cz.zcu.kiv</groupId>
       <artifactId>workflow_designer</artifactId>
-      <version>1.15</version>
+      <version>1.16</version>
     </dependency>
     <dependency>
       <groupId>net.objecthunter</groupId>

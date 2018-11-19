@@ -5,10 +5,12 @@ import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockOutput;
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockProperty;
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockType;
 
+import java.io.Serializable;
+
 import static cz.zcu.kiv.WorkflowDesigner.Type.NUMBER;
 
 @BlockType(type ="Constant", family = "MATH")
-public class Constant {
+public class Constant implements Serializable {
 
 
     @BlockProperty(name = "Value", type = NUMBER, defaultValue = "0")

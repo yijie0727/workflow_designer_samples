@@ -12,6 +12,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import static cz.zcu.kiv.WorkflowDesigner.Type.STRING;
 import static cz.zcu.kiv.WorkflowDesigner.WorkflowCardinality.ONE_TO_ONE;
 
 @BlockType(type ="CSVto2dPlot", family = "MATH")
-public class CSVto2dPlot {
+public class CSVto2dPlot implements Serializable {
 
     @BlockProperty(name="HasHeaders", type=Type.BOOLEAN , defaultValue = "")
     private Boolean hasHeaders=false;

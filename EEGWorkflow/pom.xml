@@ -122,18 +122,6 @@
             <artifactId>${nd4j.backend}</artifactId>
         </dependency>
 
-        <!-- Core DL4J functionality -->
-        <!--<dependency>-->
-            <!--<groupId>org.deeplearning4j</groupId>-->
-            <!--<artifactId>deeplearning4j-core</artifactId>-->
-            <!--<version>${dl4j.version}</version>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>org.deeplearning4j</groupId>-->
-            <!--<artifactId>deeplearning4j-nlp</artifactId>-->
-            <!--<version>${dl4j.version}</version>-->
-        <!--</dependency>-->
 
         <!-- deeplearning4j-ui is used for HistogramIterationListener + visualization: see http://deeplearning4j.org/visualization -->
         <dependency>
@@ -141,92 +129,13 @@
             <artifactId>deeplearning4j-ui_2.10</artifactId>
             <version>${dl4j.version}</version>
         </dependency>
+    
+		<dependency>
+			<groupId>biz.source_code.dsp</groupId>
+			<artifactId>dsp-collection</artifactId>
+			<version>1.0</version>
+		</dependency>
 
-		<!--<dependency>-->
-			<!--<groupId>gov.nist.math</groupId>-->
-			<!--<artifactId>jama</artifactId>-->
-			<!--<version>1.0.3</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>org.jfree</groupId>-->
-			<!--<artifactId>jcommon</artifactId>-->
-			<!--<version>1.0.23</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>org.jfree</groupId>-->
-			<!--<artifactId>jfreechart</artifactId>-->
-			<!--<version>1.0.19</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>log4j</groupId>-->
-			<!--<artifactId>log4j</artifactId>-->
-			<!--<version>1.2.17</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>org.slf4j</groupId>-->
-			<!--<artifactId>slf4j-api</artifactId>-->
-			<!--<version>1.7.19</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>org.slf4j</groupId>-->
-			<!--<artifactId>slf4j-simple</artifactId>-->
-			<!--<version>1.6.4</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>xalan</groupId>-->
-			<!--<artifactId>xalan</artifactId>-->
-			<!--<version>2.7.2</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>xerces</groupId>-->
-			<!--<artifactId>xercesImpl</artifactId>-->
-			<!--<version>2.11.0</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>xml-apis</groupId>-->
-			<!--<artifactId>xml-apis</artifactId>-->
-			<!--<version>1.4.01</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>org.antlr</groupId>-->
-			<!--<artifactId>antlr-complete</artifactId>-->
-			<!--<version>3.5.2</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>commons-collections</groupId>-->
-			<!--<artifactId>commons-collections</artifactId>-->
-			<!--<version>3.2.2</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>commons-io</groupId>-->
-			<!--<artifactId>commons-io</artifactId>-->
-			<!--<version>2.4</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>commons-lang</groupId>-->
-			<!--<artifactId>commons-lang</artifactId>-->
-			<!--<version>2.6</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>org.apache.directory.studio</groupId>-->
-			<!--<artifactId>org.apache.commons.logging</artifactId>-->
-			<!--<version>1.1.1</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>org.apache.commons</groupId>-->
-			<!--<artifactId>commons-math</artifactId>-->
-			<!--<version>2.2</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>com.lowagie</groupId>-->
-			<!--<artifactId>itext</artifactId>-->
-			<!--<version>2.1.5</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>jfree</groupId>-->
-			<!--<artifactId>jcommon</artifactId>-->
-			<!--<version>1.0.16</version>-->
-		<!--</dependency>-->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -237,47 +146,6 @@
 			<artifactId>junit-dep</artifactId>
 			<version>4.11</version>
 		</dependency>
-		<!--<dependency>-->
-			<!--<groupId>org.springframework</groupId>-->
-			<!--<artifactId>spring-beans</artifactId>-->
-			<!--<version>4.2.5.RELEASE</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>org.springframework</groupId>-->
-			<!--<artifactId>spring-core</artifactId>-->
-			<!--<version>4.2.5.RELEASE</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>org.antlr</groupId>-->
-			<!--<artifactId>stringtemplate</artifactId>-->
-			<!--<version>4.0.2</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>org.apache.xmlgraphics</groupId>-->
-			<!--<artifactId>fop</artifactId>-->
-			<!--<version>2.1</version>-->
-		<!--</dependency>-->
-
-
-		<!--<dependency>-->
-			<!--<groupId>tw.edu.ntu.csie</groupId>-->
-			<!--<artifactId>libsvm</artifactId>-->
-			<!--<version>3.17</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>jdom</groupId>-->
-			<!--<artifactId>jdom</artifactId>-->
-			<!--<version>1.0</version>-->
-		<!--</dependency>-->
-
-
-
-        <!--<dependency>-->
-			<!--<groupId>org.apache.avalon.framework</groupId>-->
-			<!--<artifactId>avalon-framework-api</artifactId>-->
-			<!--<version>4.3.1</version>-->
-		<!--</dependency>-->
-
 
 		<!-- Home made or unavailable on public repositories -->
 		<dependency>
@@ -291,61 +159,10 @@
 			<artifactId>EEGLoader</artifactId>
 			<version>2.2</version>
 		</dependency>
-
-		<!--<dependency>-->
-			<!--<groupId>cz.zcu.kiv</groupId>-->
-			<!--<artifactId>HHT</artifactId>-->
-			<!--<version>1.0</version>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>net.sf.javaml</groupId>-->
-			<!--<artifactId>javaml</artifactId>-->
-			<!--<version>0.1.5</version>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.neuroph</groupId>-->
-			<!--<artifactId>core</artifactId>-->
-			<!--<version>2.9</version>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>MPERPs</groupId>-->
-			<!--<artifactId>cz.zcu.kiv</artifactId>-->
-			<!--<version>1.0</version>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>com.google.code.matlabcontrol</groupId>-->
-			<!--<artifactId>matlabcontrol</artifactId>-->
-			<!--<version>4.1.0</version>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>nz.ac.waikato</groupId>-->
-			<!--<artifactId>weka</artifactId>-->
-			<!--<version>1.0</version>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>biz.source_code.dsp</groupId>-->
-			<!--<artifactId>dsp-collection</artifactId>-->
-			<!--<version>1.0</version>-->
-		<!--</dependency>-->
-		<!---->
-		<!--&lt;!&ndash; https://mvnrepository.com/artifact/net.java.dev.jna/jna &ndash;&gt;-->
-		<!--<dependency>-->
-    		<!--<groupId>net.java.dev.jna</groupId>-->
-    		<!--<artifactId>jna</artifactId>-->
-    		<!--<version>4.2.2</version>-->
-		<!--</dependency>-->
-
-
 		<dependency>
 			<groupId>cz.zcu.kiv</groupId>
 			<artifactId>workflow_designer</artifactId>
-			<version>1.15</version>
+			<version>1.16</version>
 		</dependency>
 
 

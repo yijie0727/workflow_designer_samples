@@ -5,10 +5,12 @@ import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockOutput;
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockProperty;
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockType;
 
+import java.io.Serializable;
+
 import static cz.zcu.kiv.WorkflowDesigner.Type.NUMBER;
 
 @BlockType(type ="DelayedConstant", family = "MATH", description = "Provides a constant after a time delay")
-public class DelayedConstant {
+public class DelayedConstant implements Serializable {
 
 
     @BlockProperty(name = "Value", type = NUMBER, defaultValue = "0")

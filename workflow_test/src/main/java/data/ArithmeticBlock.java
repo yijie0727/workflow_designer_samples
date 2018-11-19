@@ -5,13 +5,14 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 
 import static cz.zcu.kiv.WorkflowDesigner.Type.NUMBER;
 import static cz.zcu.kiv.WorkflowDesigner.Type.STRING;
 
-@BlockType(type ="ARITHMETIC", family = "MATH", runAsJar = true)
-public class ArithmeticBlock {
+@BlockType(type ="ARITHMETIC", family = "MATH")
+public class ArithmeticBlock implements Serializable {
 
     @BlockInput(name = "Operand1", type = NUMBER)
     private int op1=0;

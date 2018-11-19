@@ -2,11 +2,14 @@ package cz.zcu.kiv.commons.MathUtils;
 
 
 import cz.zcu.kiv.WorkflowDesigner.Annotations.*;
+
+import java.io.Serializable;
+
 import static cz.zcu.kiv.WorkflowDesigner.Type.NUMBER;
 import static cz.zcu.kiv.WorkflowDesigner.Type.STRING;
 
 @BlockType(type ="Arithmetic", family = "MATH", description = "Performs + - / * on two operands")
-public class Arithmetic {
+public class Arithmetic implements Serializable {
 
     @BlockInput(name = "Operand1", type = NUMBER)
     private int op1=0;

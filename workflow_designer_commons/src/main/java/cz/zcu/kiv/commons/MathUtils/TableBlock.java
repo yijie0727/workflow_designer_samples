@@ -5,6 +5,7 @@ import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockInput;
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockType;
 import cz.zcu.kiv.WorkflowDesigner.Visualizations.Table;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 import static cz.zcu.kiv.WorkflowDesigner.Type.NUMBER;
 
 @BlockType(type="TABLE",family = "MATH")
-public class TableBlock {
+public class TableBlock implements Serializable {
     @BlockInput(name="multiplier",type=NUMBER)
     private int multiplier;
 

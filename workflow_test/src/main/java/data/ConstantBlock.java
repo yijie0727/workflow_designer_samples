@@ -2,10 +2,12 @@ package data;
 
 import cz.zcu.kiv.WorkflowDesigner.Annotations.*;
 
+import java.io.Serializable;
+
 import static cz.zcu.kiv.WorkflowDesigner.Type.NUMBER;
 
-@BlockType(type ="CONSTANT", family = "MATH", runAsJar = true)
-public class ConstantBlock {
+@BlockType(type ="CONSTANT", family = "MATH")
+public class ConstantBlock implements Serializable {
 
 
     @BlockProperty(name = "Value", type = NUMBER, defaultValue = "0")

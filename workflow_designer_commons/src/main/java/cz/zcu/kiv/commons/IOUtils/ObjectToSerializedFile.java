@@ -14,7 +14,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @BlockType(type="ObjectToSerializedFile",family = "IOUtils")
-public class ObjectToSerializedFile {
+public class ObjectToSerializedFile implements Serializable{
 
     @BlockInput(name="Object", type="OBJECT")
     private Object objectInput;

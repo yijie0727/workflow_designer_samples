@@ -9,11 +9,12 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.Date;
 
 @BlockType(type="ObjectToString",family = "IOUtils")
-public class ObjectToString {
+public class ObjectToString implements Serializable {
 
     @BlockInput(name="Object", type="OBJECT")
     private Object objectInput;

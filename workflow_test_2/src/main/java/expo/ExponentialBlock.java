@@ -3,12 +3,13 @@ package expo;
 import cz.zcu.kiv.WorkflowDesigner.Annotations.*;
 
 
+import java.io.Serializable;
 
 import static cz.zcu.kiv.WorkflowDesigner.Type.NUMBER;
 
 
 @BlockType(type ="ExponentialBlock", family = "MATH")
-public class ExponentialBlock {
+public class ExponentialBlock implements Serializable {
 
     @BlockInput(name = "Operand1", type = NUMBER)
     private int op1=0;

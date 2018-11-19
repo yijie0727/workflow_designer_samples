@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +16,8 @@ import static cz.zcu.kiv.WorkflowDesigner.Type.NUMBER;
 import static cz.zcu.kiv.WorkflowDesigner.Type.STRING;
 import static cz.zcu.kiv.WorkflowDesigner.WorkflowCardinality.ONE_TO_ONE;
 
-@BlockType(type ="LineEquation", family = "MATH", runAsJar = true)
-public class LineEquation {
+@BlockType(type ="LineEquation", family = "MATH")
+public class LineEquation implements Serializable {
 
     @BlockInput(name = "IntRangeStart", type = NUMBER)
     public int op1=0;

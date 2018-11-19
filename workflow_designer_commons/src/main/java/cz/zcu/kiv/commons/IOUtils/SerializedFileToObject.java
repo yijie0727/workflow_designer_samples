@@ -9,9 +9,10 @@ import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
 @BlockType(type="SerializedFileToObject",family = "IOUtils")
-public class SerializedFileToObject {
+public class SerializedFileToObject implements Serializable {
     @BlockInput(name = "File", type = "FILE")
     private File fileInput;
 

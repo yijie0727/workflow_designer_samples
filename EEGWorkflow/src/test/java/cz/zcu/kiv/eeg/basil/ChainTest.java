@@ -2,7 +2,15 @@ package cz.zcu.kiv.eeg.basil;
 import cz.zcu.kiv.WorkflowDesigner.FieldMismatchException;
 import cz.zcu.kiv.WorkflowDesigner.Visualizations.Table;
 import cz.zcu.kiv.WorkflowDesigner.Workflow;
+import cz.zcu.kiv.eeg.basil.data.EEGMarker;
 import cz.zcu.kiv.eeg.basil.workflow.*;
+import cz.zcu.kiv.eeg.basil.workflow.io.OffLineDataProviderBlock;
+import cz.zcu.kiv.eeg.basil.workflow.processing.AveragingBlock;
+import cz.zcu.kiv.eeg.basil.workflow.processing.BaselineCorrectionBlock;
+import cz.zcu.kiv.eeg.basil.workflow.processing.ChannelSelectionBlock;
+import cz.zcu.kiv.eeg.basil.workflow.processing.EpochExtractionBlock;
+import cz.zcu.kiv.eeg.basil.workflow.visualization.EEGDataTableVisualizer;
+
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;

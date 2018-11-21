@@ -10,10 +10,12 @@ import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockExecute;
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockOutput;
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockProperty;
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockType;
+import cz.zcu.kiv.eeg.basil.data.Configuration;
 import cz.zcu.kiv.eeg.basil.data.EEGDataMessage;
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackage;
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
 import cz.zcu.kiv.eeg.basil.data.EEGMarker;
+import java.util.Arrays;
 
 
 
@@ -33,12 +35,12 @@ public class LSLDataProvider implements Serializable  {
 	
 	
 	@BlockProperty(name = "Buffer size", type = Type.NUMBER)
-	private int buffer_size; /* size of a single data block before  transferring to observers */
+	private int buffer_size = 5000; /* size of a single data block before  transferring to observers */
     @BlockOutput(name = "EEGData", type = "EEGDataList")
     private EEGDataPackageList eegDataPackageList;
 	
 	
-	private volatile double[][] data; /* data  - BLOCK*/
+	private volatile double[][] data; /* data  - BLOCK */
 	private volatile List<EEGMarker> markers; /* stimuli markers */ 
 	private LSLEEGCollector eegCollector;   /* provider for EEG data */
 	private LSLMarkerCollector markerCollector;  /* provider for markers */
@@ -81,21 +83,22 @@ public class LSLDataProvider implements Serializable  {
 	 * -> update
 	 * 
 	 * @param eegSample
+     * @param configuration 
 	 */
-	public synchronized void addEEGSample(float[] eegSample) {
-		if (data == null)
+	public synchronized void addEEGSample(float[] eegSample, Configuration configuration) {
+		if (data == null) {
 			data = new double[eegSample.length][buffer_size];
+		}
 		
 		// fill data array using the obtained sample
-		for (int i = 0; i < eegSample.length; i++)
+		for (int i = 0; i < eegSample.length; i++) {
 			data[i][dataPointer] = eegSample[i];
-		
-		
+		}
 		dataPointer++;
 		
 		/* if maximum size is reached, transfer the data */
 		if (dataPointer == buffer_size) {
-			EEGDataPackage dataPackage = new EEGDataPackage(data, markers, null, null);
+			EEGDataPackage dataPackage = new EEGDataPackage(data, markers, null, configuration);
 			this.eegDataList.add(dataPackage);
 			this.stop();
 
@@ -116,6 +119,8 @@ public class LSLDataProvider implements Serializable  {
 	 * @param marker
 	 */
 	public synchronized void addMarker(String[] marker) {
+		System.out.println("New LSL markers: " + Arrays.toString(marker));
+		
 		EEGMarker newMarker = new EEGMarker(marker[0], dataPointer);
 		this.markers.add(newMarker);
 	}

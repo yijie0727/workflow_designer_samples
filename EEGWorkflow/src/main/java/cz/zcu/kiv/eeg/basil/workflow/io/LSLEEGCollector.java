@@ -1,6 +1,7 @@
 package cz.zcu.kiv.eeg.basil.workflow.io;
 
 
+import cz.zcu.kiv.eeg.basil.data.Configuration;
 import edu.ucsd.sccn.LSL;
 import edu.ucsd.sccn.LSL.XMLElement;
 
@@ -28,15 +29,15 @@ public class LSLEEGCollector extends Thread {
 		    	String streamName = eegInlet.info().name();
 		    	double srate = eegInlet.info().nominal_srate();
 		    	XMLElement metadata = eegInlet.info().desc();
-		    
-		    	System.out.println(metadata);
 		    	
+		    	Configuration configuration=new Configuration();
+	            configuration.setSamplingInterval(srate);
 		    	float[] eegSample = new float[eegInlet.info().channel_count()];
-		        
+		       
 
 		        while (running) { /* collects and sends one sample for multiple EEG channels */
 	                eegInlet.pull_sample(eegSample);
-		            messageProvider.addEEGSample(eegSample.clone());
+		            messageProvider.addEEGSample(eegSample.clone(), configuration);
 		        }
 			} catch (Exception e) {
 				e.printStackTrace();

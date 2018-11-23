@@ -167,6 +167,14 @@
 			<artifactId>workflow_designer</artifactId>
 			<version>1.17</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.python/jython -->
+		<dependency>
+    		<groupId>org.python</groupId>
+    		<artifactId>jython</artifactId>
+    		<version>2.7.0</version>
+		</dependency>
+		
 
 
 	</dependencies>

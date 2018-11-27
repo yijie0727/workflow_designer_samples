@@ -1,4 +1,4 @@
-package cz.zcu.kiv.eeg.basil.workflow.io;
+package cz.zcu.kiv.eeg.basil.workflow.io.lsl;
 
 
 import cz.zcu.kiv.eeg.basil.data.Configuration;
@@ -12,10 +12,11 @@ import edu.ucsd.sccn.LSL.XMLElement;
  *
  */
 public class LSLEEGCollector extends Thread {
-	private LSLDataProvider messageProvider; /* reference to EEG/ERP data provider */
+	private LSLDataProviderBlock messageProvider; /* reference to EEG/ERP data provider */
 	private volatile boolean          running;
+	private LSL.StreamInlet eegInlet;
 		
-	public LSLEEGCollector(LSLDataProvider messageProvider) {
+	public LSLEEGCollector(LSLDataProviderBlock messageProvider) {
 		this.messageProvider = messageProvider;
 		this.running = true;
 	}
@@ -25,7 +26,7 @@ public class LSLEEGCollector extends Thread {
 		 	
 		   
 		    try {
-		    	LSL.StreamInlet eegInlet = new LSL.StreamInlet(eegData[0]);
+		    	eegInlet = new LSL.StreamInlet(eegData[0]);
 		    	String streamName = eegInlet.info().name();
 		    	double srate = eegInlet.info().nominal_srate();
 		    	XMLElement metadata = eegInlet.info().desc();
@@ -41,6 +42,10 @@ public class LSLEEGCollector extends Thread {
 		        }
 			} catch (Exception e) {
 				e.printStackTrace();
+			}
+		    
+		    if (eegInlet != null) {
+				eegInlet.close();
 			}
 	}
 

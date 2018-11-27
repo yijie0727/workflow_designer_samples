@@ -3,12 +3,12 @@ package cz.zcu.kiv.eeg.basil;
 import java.io.IOException;
 
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
-import cz.zcu.kiv.eeg.basil.workflow.io.LSLDataProvider;
+import cz.zcu.kiv.eeg.basil.workflow.io.lsl.LSLDataProviderBlock;
 
 public class LSLTest {
 
 	public static void main(String[] agrs) {
-		LSLDataProvider lslData = new LSLDataProvider();
+		LSLDataProviderBlock lslData = new LSLDataProviderBlock();
 		try {
 			lslData.process();
 			EEGDataPackageList eegData = lslData.getEegDataPackageList();

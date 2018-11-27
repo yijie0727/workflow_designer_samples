@@ -1,4 +1,4 @@
-package cz.zcu.kiv.eeg.basil.workflow.io;
+package cz.zcu.kiv.eeg.basil.workflow.io.lsl;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -30,7 +30,7 @@ import java.util.Arrays;
  *
  */
 @BlockType(type="LSLDataProvider", family = "DataProvider", runAsJar = true)
-public class LSLDataProvider implements Serializable  {
+public class LSLDataProviderBlock implements Serializable  {
 	
 	
 	
@@ -48,7 +48,7 @@ public class LSLDataProvider implements Serializable  {
 	private int blockCounter; /* counter for blocks that have been sent to observers */
 	private List<EEGDataPackage> eegDataList; 
 	
-	public LSLDataProvider() {
+	public LSLDataProviderBlock() {
 		this.data           = null;
 		this.markers        = new ArrayList<EEGMarker>();
 		this.dataPointer    = 0;

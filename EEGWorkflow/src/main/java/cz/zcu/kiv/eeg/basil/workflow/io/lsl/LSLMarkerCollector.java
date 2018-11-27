@@ -1,4 +1,4 @@
-package cz.zcu.kiv.eeg.basil.workflow.io;
+package cz.zcu.kiv.eeg.basil.workflow.io.lsl;
 
 
 import edu.ucsd.sccn.LSL;
@@ -9,10 +9,10 @@ import edu.ucsd.sccn.LSL;
  *
  */
 public class LSLMarkerCollector extends Thread {
-	private LSLDataProvider messageProvider; /* reference to EEG/ERP data provider */
+	private LSLDataProviderBlock messageProvider; /* reference to EEG/ERP data provider */
 	private volatile boolean running;
 	
-	public LSLMarkerCollector(LSLDataProvider messageProvider) {
+	public LSLMarkerCollector(LSLDataProviderBlock messageProvider) {
 		this.messageProvider = messageProvider;
 		this.running         = true;
 	}

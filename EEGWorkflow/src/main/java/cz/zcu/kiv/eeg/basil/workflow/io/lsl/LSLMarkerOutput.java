@@ -24,9 +24,11 @@ public class LSLMarkerOutput extends Thread {
 		for (EEGMarker marker: markers) {
 			int delay = marker.getOffset() - timer;
 			outletMarkers.push_sample(new String[] {marker.getName()});
+			
 			try {
 				Thread.sleep(delay);
-			} catch (InterruptedException e) {
+			}
+			catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockExecute;
+import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockInput;
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockProperty;
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockType;
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackage;
@@ -24,7 +25,7 @@ public class LSLOutputBlock {
 	/**
 	 * Input data to be streamed
 	 */
-	@BlockProperty(name = "EEGData", type = "EEGDataList")
+	@BlockInput(name = "EEGData", type = "EEGDataList")
 	private EEGDataPackageList eegDataPackageList;
 	
 	@BlockExecute
@@ -53,7 +54,7 @@ public class LSLOutputBlock {
 				
 		// send data
 		for (EEGDataPackage eegDataPackage: eegDataPackages) {
-			double[][] data = eegDataPackage.getData();
+			double[][] data 		= eegDataPackage.getData();
 			List<EEGMarker> markers = eegDataPackage.getMarkers();
 						
 			markerOutput.setData(markers);
@@ -61,10 +62,21 @@ public class LSLOutputBlock {
 			
 			eegOutput.setData(data);
 			eegOutput.start();
-						
-			markerOutput.join();
+			
 			eegOutput.join();
+			markerOutput.join();
+			
 		}
 	}
+
+	public EEGDataPackageList getEegDataPackageList() {
+		return eegDataPackageList;
+	}
+
+	public void setEegDataPackageList(EEGDataPackageList eegDataPackageList) {
+		this.eegDataPackageList = eegDataPackageList;
+	}
+	
+	
 
 }

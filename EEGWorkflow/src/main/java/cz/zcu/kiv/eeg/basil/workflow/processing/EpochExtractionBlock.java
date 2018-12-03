@@ -44,8 +44,8 @@ public class EpochExtractionBlock implements Serializable {
                 int offset = currentMarker.getOffset();
                 double[][] epochData = new double[data.length][endSample - startSample];
 
-                if (offset + startSample < 0) {
-                    System.err.println("Epoch outside of the expected range");
+                if (offset + startSample < 0 || offset + endSample >= data[0].length) {
+                    System.err.println("Epoch outside of the expected range. Data length: " + data.length + ", startSample: " + startSample + ", endSample: " + endSample);
                     continue; /* epoch prestimulus offset outside of the range */
                 }
                 for (int i = 0; i < data.length; i++) {

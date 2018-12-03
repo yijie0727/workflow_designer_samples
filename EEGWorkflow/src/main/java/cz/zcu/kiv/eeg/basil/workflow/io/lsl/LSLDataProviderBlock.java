@@ -64,14 +64,11 @@ public class LSLDataProviderBlock implements Serializable  {
 		this.eegCollector.start();
 		this.markerCollector.start();
 		
-		
 		this.eegCollector.join();
 		this.markerCollector.join();
 		eegDataPackageList = new EEGDataPackageList(eegDataList);
-		
 	}
 
-	
 		
 	public void stop() {
 		this.eegCollector.terminate();
@@ -101,15 +98,6 @@ public class LSLDataProviderBlock implements Serializable  {
 			EEGDataPackage dataPackage = new EEGDataPackage(data, markers, null, configuration);
 			this.eegDataList.add(dataPackage);
 			this.stop();
-
-			// TODO: send "EEGDataMessage" data
-			
-			
-			/*this.blockCounter++;
-			this.data = new double[eegSample.length][buffer_size];
-			this.markers = new ArrayList<EEGMarker>();
-			this.dataPointer = 0;*/
-			
 		}
 	}
 
@@ -119,8 +107,6 @@ public class LSLDataProviderBlock implements Serializable  {
 	 * @param marker
 	 */
 	public synchronized void addMarker(String[] marker) {
-		System.out.println("New LSL markers: " + Arrays.toString(marker));
-		
 		EEGMarker newMarker = new EEGMarker(marker[0], dataPointer);
 		this.markers.add(newMarker);
 	}

@@ -34,19 +34,25 @@ public class EEGPlotBlock implements Serializable {
         graph.setLayout(layout);
         List<Trace> traces=new ArrayList<>();
         for(EEGDataPackage eegData:eegDataList.getEegDataPackage()){
-            int channel=0;
-            for(String name:eegData.getChannelNames()){
+            
+            for (int i = 0; i < eegData.getData().length; i++) {
                 Trace trace = new Trace();
-                trace.setName(name);
-                List<Point>points=new ArrayList<>();
-                double data[]=eegData.getData()[channel];
-                for(int i=0;i<data.length;i++){
-                    Point point=new Point(new Coordinate((double)i,data[i]),"");
+                
+                if (eegData.getChannelNames() == null)
+                	trace.setName("Channel: " + i);
+                else
+                	trace.setName(eegData.getChannelNames()[i]);
+                
+                
+                List<Point>points = new ArrayList<>();
+                double data[] = eegData.getData()[i];
+                for (int j = 0; j < data.length; j++){
+                    Point point = new Point(new Coordinate((double)j, data[j]), "");
                     points.add(point);
                 }
                 trace.setPoints(points);
                 traces.add(trace);
-                channel++;
+                
             }
         }
         graph.setTraces(traces);

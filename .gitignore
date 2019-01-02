@@ -26,3 +26,12 @@ workflow_designer_commons/target/
 \.idea/
 
 EEG_DataAnalysisPackage/\.log
+/workflow_test/.classpath
+/workflow_test/.project
+/workflow_test/.settings/org.eclipse.jdt.core.prefs
+/workflow_test/.settings/org.eclipse.m2e.core.prefs
+/workflow_test_2/.classpath
+/workflow_test_2/.project
+/workflow_test_2/.settings/org.eclipse.jdt.core.prefs
+/workflow_test_2/.settings/org.eclipse.m2e.core.prefs
+/EEGWorkflow/.pydevproject

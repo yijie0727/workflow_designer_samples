@@ -1,0 +1,131 @@
+{
+    "edges": [
+        {
+            "id": 3,
+            "block1": 1,
+            "connector1": [
+                "EEGData",
+                "output"
+            ],
+            "block2": 2,
+            "connector2": [
+                "EEGData",
+                "input"
+            ]
+        },
+        {
+            "id": 4,
+            "block1": 2,
+            "connector1": [
+                "EEGData",
+                "output"
+            ],
+            "block2": 3,
+            "connector2": [
+                "EEGData",
+                "input"
+            ]
+        },
+        {
+            "id": 5,
+            "block1": 3,
+            "connector1": [
+                "EEGData",
+                "output"
+            ],
+            "block2": 4,
+            "connector2": [
+                "EEGData",
+                "input"
+            ]
+        },
+        {
+            "id": 6,
+            "block1": 5,
+            "connector1": [
+                "marker",
+                "output"
+            ],
+            "block2": 4,
+            "connector2": [
+                "Markers",
+                "input",
+                0
+            ]
+        },
+        {
+            "id": 7,
+            "block1": 4,
+            "connector1": [
+                "EEGData",
+                "output"
+            ],
+            "block2": 6,
+            "connector2": [
+                "EEGData",
+                "input"
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "id": 1,
+            "x": -812,
+            "y": -209,
+            "type": "LSLDataProvider",
+            "module": "basil_bci-1.1.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "values": {
+                "Buffer size": "50000"
+            }
+        },
+        {
+            "id": 2,
+            "x": -626,
+            "y": -224,
+            "type": "EpochExtraction",
+            "module": "basil_bci-1.1.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "values": {
+                "PreStimulus onset": "-100",
+                "PostStimulus onset": "1000"
+            }
+        },
+        {
+            "id": 3,
+            "x": -428,
+            "y": -222,
+            "type": "BaselineCorrection",
+            "module": "basil_bci-1.1.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "values": {
+                "EndTime": "100",
+                "StartTime": "0"
+            }
+        },
+        {
+            "id": 4,
+            "x": -303,
+            "y": -72,
+            "type": "AveragingBlock",
+            "module": "basil_bci-1.1.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "values": {}
+        },
+        {
+            "id": 5,
+            "x": -517,
+            "y": -83,
+            "type": "EEGMarkerBlock",
+            "module": "basil_bci-1.1.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "values": {
+                "Name": "S  2",
+                "Offset": "0"
+            }
+        },
+        {
+            "id": 6,
+            "x": -272,
+            "y": 87,
+            "type": "EEGPlot",
+            "module": "basil_bci-1.1.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "values": {}
+        }
+    ]
+}

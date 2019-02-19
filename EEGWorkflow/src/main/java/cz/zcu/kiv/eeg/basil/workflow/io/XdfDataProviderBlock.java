@@ -30,11 +30,32 @@ public class XdfDataProviderBlock {
 	
 	@BlockOutput(name = "EEGData", type = "EEGDataList")
 	private EEGDataPackageList eegDataPackageList;
+	
+	
+	@BlockProperty(name="EEG Stream Name",type = Type.STRING)
+	private String eegStreamName;
+	
+	@BlockProperty(name="Marker Stream Name",type = Type.STRING)
+	private String markerStreamName;
     
 	
 	private XdfReader xdfReader;
 	
+	public XdfDataProviderBlock() {
 	
+	}
+		
+	public XdfDataProviderBlock(List<File> xdfFileInputs, String eegStreamName, String markerStreamName) {
+		this.xdfFileInputs = xdfFileInputs;
+		this.eegStreamName = eegStreamName;
+		this.markerStreamName = markerStreamName;
+	}
+
+
+
+
+
+
 	@BlockExecute
 	public void process() throws IOException {
 		ArrayList<EEGDataPackage> eegDataList = new ArrayList<>();
@@ -45,26 +66,26 @@ public class XdfDataProviderBlock {
 				
 				if (success) {
 					XdfFileData data = xdfReader.getXdfData();
-					
-					EEGDataPackage eegData = new EEGDataPackage();
-			        //eegData.setData(data.getData(0).getSamples());
-			        //eegData.setChannelNames(channelNames);
-			        Configuration configuration=new Configuration();
-			        //configuration.setSamplingInterval(Double.parseDouble(getProperty("samplinginterval", data.getF)));
-			        eegData.setConfiguration(configuration);
-	
-			        /*EEGMarker[] eegMarkers = new EEGMarker[markers.size()];
-			        int i = 0;
-			        for (cz.zcu.kiv.signal.EEGMarker m : markers) {
-			            eegMarkers[i] = new EEGMarker(m.getStimulus(), m.getPosition());
-			            i++;
-			        }
-			        eegData.setMarkers(Arrays.asList(eegMarkers));*/
-					
+					XdfTransformer xdfTransformer = new XdfTransformer(data, eegStreamName, markerStreamName);
+					if (xdfTransformer.convertData()) { // conversion successful
+						EEGDataPackage eegData = xdfTransformer.getEEGDataPackage();
+						eegDataList.add(eegData);
+					}
 				}
 			}
 		}
 		this.eegDataPackageList = new EEGDataPackageList(eegDataList);
-		   
 	}
+
+	public EEGDataPackageList getEegDataPackageList() {
+		return eegDataPackageList;
+	}
+
+	public void setEegDataPackageList(EEGDataPackageList eegDataPackageList) {
+		this.eegDataPackageList = eegDataPackageList;
+	}
+	
+	
+	
+	
 }

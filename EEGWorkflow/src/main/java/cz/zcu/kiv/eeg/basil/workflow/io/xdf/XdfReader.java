@@ -24,12 +24,13 @@ public class XdfReader {
         if (!f.exists())
             return false;
 
+        BufferedInputStream bis = null;
         try {
             xdfData = new XdfFileData();
 
             byte[] buffer = new byte[4];
             FileInputStream fis = new FileInputStream(f);
-            BufferedInputStream bis = new BufferedInputStream(fis);
+            bis = new BufferedInputStream(fis);
             bis.read(buffer);
             String s = new String(buffer, StandardCharsets.UTF_8);
             if (!s.equals("XDF:")) {
@@ -112,6 +113,13 @@ public class XdfReader {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+        	if (bis != null)
+				try {
+					bis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
         }
 
         return false;

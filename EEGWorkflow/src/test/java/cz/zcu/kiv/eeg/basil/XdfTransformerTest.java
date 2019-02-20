@@ -4,16 +4,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-
 import org.junit.Test;
-
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
 import cz.zcu.kiv.eeg.basil.workflow.io.XdfDataProviderBlock;
-import cz.zcu.kiv.eeg.basil.workflow.io.xdf.XdfData;
-import cz.zcu.kiv.eeg.basil.workflow.io.xdf.XdfFileData;
-import cz.zcu.kiv.eeg.basil.workflow.io.xdf.XdfReader;
 
 public class XdfTransformerTest {
 

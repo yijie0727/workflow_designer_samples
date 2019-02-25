@@ -40,7 +40,7 @@ public class StreamHeader {
 
     private String hostname;
 
-    private Map<String, Object> desc;
+    private EEGDescription desc;
 
     private double tDiff;
 
@@ -133,11 +133,11 @@ public class StreamHeader {
         this.hostname = hostname;
     }
 
-    public Map<String, Object> getDesc() {
+    public EEGDescription getDesc() {
         return desc;
     }
 
-    public void setDesc(Map<String, Object> desc) {
+    public void setDesc(EEGDescription desc) {
         this.desc = desc;
     }
 

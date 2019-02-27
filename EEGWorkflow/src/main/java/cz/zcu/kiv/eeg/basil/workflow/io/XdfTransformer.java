@@ -1,11 +1,13 @@
 package cz.zcu.kiv.eeg.basil.workflow.io;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import cz.zcu.kiv.eeg.basil.data.Configuration;
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackage;
+import cz.zcu.kiv.eeg.basil.workflow.io.xdf.Channel;
 import cz.zcu.kiv.eeg.basil.workflow.io.xdf.IStreamData;
 import cz.zcu.kiv.eeg.basil.workflow.io.xdf.StreamHeader;
 import cz.zcu.kiv.eeg.basil.workflow.io.xdf.XdfFileData;
@@ -69,6 +71,18 @@ public class XdfTransformer {
 		Configuration configuration = new Configuration();
         configuration.setSamplingInterval(this.xdfData.getStreamHeaders().get(eegKey).getSampling());
         eegData.setConfiguration(configuration);
+        
+        // get channel names
+        if (this.xdfData.getStreamHeaders().get(eegKey).getDesc() != null) {
+	        List<Channel> channels = this.xdfData.getStreamHeaders().get(eegKey).getDesc().getChannelsInfo().getChannels();
+	        List<String> channelNames = new ArrayList<String>();
+	        for (Channel channel: channels) {
+	        	channelNames.add(channel.getLabel());
+	        }
+	        eegData.setChannelNames(channelNames.toArray(new String[channelNames.size()]));
+        }
+        
+        
         
         // set EEG data stream
         IStreamData eegStream 		  = this.xdfData.getData(eegKey);

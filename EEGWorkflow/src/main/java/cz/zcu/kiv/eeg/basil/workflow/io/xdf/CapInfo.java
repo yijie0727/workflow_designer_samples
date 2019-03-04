@@ -1,8 +1,11 @@
 package cz.zcu.kiv.eeg.basil.workflow.io.xdf;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by Tomas Prokop on 25.02.2019.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CapInfo {
     private String name;
     private int size;

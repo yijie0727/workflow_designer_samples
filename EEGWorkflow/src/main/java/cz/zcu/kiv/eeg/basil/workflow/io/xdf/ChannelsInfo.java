@@ -1,5 +1,6 @@
 package cz.zcu.kiv.eeg.basil.workflow.io.xdf;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * Created by Tomas Prokop on 25.02.2019.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ChannelsInfo {
     private String type;
 

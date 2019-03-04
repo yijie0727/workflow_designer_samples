@@ -39,7 +39,7 @@ public class EpochExtractionBlock implements Serializable {
             double sampling = eegData.getConfiguration().getSamplingInterval();
 
             for (EEGMarker currentMarker: markers) {
-                int startSample =  - (int)((0.001 * this.preStimulus) /* time in s */ * sampling);
+                int startSample =  (int)((0.001 * this.preStimulus) /* time in s */ * sampling);
                 int endSample = (int) ((0.001 * this.postStimulus) /* time in s */ * sampling);
                 int offset = currentMarker.getOffset();
                 double[][] epochData = new double[data.length][endSample - startSample];

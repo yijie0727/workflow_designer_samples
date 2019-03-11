@@ -88,6 +88,7 @@ public class XdfTransformer {
         IStreamData eegStream 		  = this.xdfData.getData(eegKey);
         List<Float>[] streamData  = eegStream.getSamples();
         double startTimeStamp     = (double) eegStream.getTimeStamps().get(0);
+
         double[][] allData		  = new double[streamData.length][streamData[0].size()];
         for (int i = 0; i < streamData.length; i++) {
         	double[] channelData = new double[streamData[i].size()];

@@ -1,0 +1,161 @@
+{
+    "edges": [
+        {
+            "id": 4,
+            "block1": 4,
+            "connector1": [
+                "EEGData",
+                "output"
+            ],
+            "block2": 6,
+            "connector2": [
+                "EEGData",
+                "input"
+            ]
+        },
+        {
+            "id": 3,
+            "block1": 5,
+            "connector1": [
+                "marker",
+                "output"
+            ],
+            "block2": 4,
+            "connector2": [
+                "Markers",
+                "input",
+                0
+            ]
+        },
+        {
+            "id": 16,
+            "block1": 10,
+            "connector1": [
+                "EEGData",
+                "output"
+            ],
+            "block2": 8,
+            "connector2": [
+                "EEGData",
+                "input"
+            ]
+        },
+        {
+            "id": 13,
+            "block1": 8,
+            "connector1": [
+                "EEGData",
+                "output"
+            ],
+            "block2": 9,
+            "connector2": [
+                "EEGData",
+                "input"
+            ]
+        },
+        {
+            "id": 14,
+            "block1": 9,
+            "connector1": [
+                "EEGData",
+                "output"
+            ],
+            "block2": 4,
+            "connector2": [
+                "EEGData",
+                "input"
+            ]
+        },
+        {
+            "id": 17,
+            "block1": 13,
+            "connector1": [
+                "EEGData",
+                "output"
+            ],
+            "block2": 10,
+            "connector2": [
+                "EEGData",
+                "input"
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "id": 13,
+            "x": -736.0128978675084,
+            "y": -157.04571857867745,
+            "type": "XdfDataProvider",
+            "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "values": {
+                "XDF File": [
+                    "Shared/XDF/2.xdf"
+                ],
+                "EEG Stream Name": "EEG",
+                "Marker Stream Name": "psychopy_stimuli"
+            }
+        },
+        {
+            "id": 5,
+            "x": -517,
+            "y": 107,
+            "type": "EEGMarkerBlock",
+            "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "values": {
+                "Name": "2",
+                "Offset": "0"
+            }
+        },
+        {
+            "id": 6,
+            "x": 148.63087248322154,
+            "y": -55.12080536912751,
+            "type": "EEGPlot",
+            "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "values": {}
+        },
+        {
+            "id": 4,
+            "x": -41.774981622385326,
+            "y": 48.07569667866386,
+            "type": "AveragingBlock",
+            "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "values": {}
+        },
+        {
+            "id": 8,
+            "x": -399.8847556493264,
+            "y": -135.07777311044705,
+            "type": "EpochExtraction",
+            "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "values": {
+                "PreStimulus onset": "-100",
+                "PostStimulus onset": "1000"
+            }
+        },
+        {
+            "id": 9,
+            "x": -212.2070274088996,
+            "y": -134.76258508596908,
+            "type": "BaselineCorrection",
+            "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "values": {
+                "EndTime": "50",
+                "StartTime": "0"
+            }
+        },
+        {
+            "id": 10,
+            "x": -496.66356387091105,
+            "y": -15.054144993565615,
+            "type": "ChannelSelection",
+            "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "values": {
+                "channels": [
+                    "Pz",
+                    ""
+                ]
+            }
+        }
+    ]
+}

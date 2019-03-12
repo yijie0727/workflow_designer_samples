@@ -35,3 +35,4 @@ EEG_DataAnalysisPackage/\.log
 /workflow_test_2/.settings/org.eclipse.jdt.core.prefs
 /workflow_test_2/.settings/org.eclipse.m2e.core.prefs
 /EEGWorkflow/.pydevproject
+/EEGWorkflow/test_data/*

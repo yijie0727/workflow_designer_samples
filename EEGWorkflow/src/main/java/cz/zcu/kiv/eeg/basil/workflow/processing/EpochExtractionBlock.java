@@ -1,6 +1,7 @@
 package cz.zcu.kiv.eeg.basil.workflow.processing;
 
 import cz.zcu.kiv.WorkflowDesigner.Annotations.*;
+import cz.zcu.kiv.eeg.basil.data.Configuration;
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackage;
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
 import cz.zcu.kiv.eeg.basil.data.EEGMarker;
@@ -39,7 +40,7 @@ public class EpochExtractionBlock implements Serializable {
             double sampling = eegData.getConfiguration().getSamplingInterval();
 
             for (EEGMarker currentMarker: markers) {
-                int startSample =  - (int)((0.001 * this.preStimulus) /* time in s */ * sampling);
+                int startSample =  (int)((0.001 * this.preStimulus) /* time in s */ * sampling);
                 int endSample = (int) ((0.001 * this.postStimulus) /* time in s */ * sampling);
                 int offset = currentMarker.getOffset();
                 double[][] epochData = new double[data.length][endSample - startSample];
@@ -52,7 +53,10 @@ public class EpochExtractionBlock implements Serializable {
                     System.arraycopy(data[i], offset + startSample , epochData[i], 0, endSample - startSample);
                 }
 
-                epochsList.add(new EEGDataPackage(epochData, Arrays.asList(currentMarker), eegData.getChannelNames(),eegData.getConfiguration()));
+                Configuration cfg = eegData.getConfiguration();
+                cfg.setPostStimulus(postStimulus);
+                cfg.setPreStimulus(preStimulus);
+                epochsList.add(new EEGDataPackage(epochData, Arrays.asList(currentMarker), eegData.getChannelNames(), cfg));
             }
         }
         epochs=new EEGDataPackageList(epochsList);

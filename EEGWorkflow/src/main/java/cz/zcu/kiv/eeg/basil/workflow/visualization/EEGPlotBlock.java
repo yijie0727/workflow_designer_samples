@@ -4,6 +4,7 @@ import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockExecute;
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockInput;import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockOutput;
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockType;
 import cz.zcu.kiv.WorkflowDesigner.Visualizations.PlotlyGraphs.*;
+import cz.zcu.kiv.eeg.basil.data.Configuration;
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackage;
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
 
@@ -34,7 +35,8 @@ public class EEGPlotBlock implements Serializable {
         graph.setLayout(layout);
         List<Trace> traces=new ArrayList<>();
         for(EEGDataPackage eegData:eegDataList.getEegDataPackage()){
-            
+            Configuration cfg = eegData.getConfiguration();
+            int startSample =  (int)((0.001 * cfg.getPreStimulus()) /* time in s */ * cfg.getSamplingInterval());
             for (int i = 0; i < eegData.getData().length; i++) {
                 Trace trace = new Trace();
                 
@@ -47,7 +49,7 @@ public class EEGPlotBlock implements Serializable {
                 List<Point>points = new ArrayList<>();
                 double data[] = eegData.getData()[i];
                 for (int j = 0; j < data.length; j++){
-                    Point point = new Point(new Coordinate((double)j, data[j]), "");
+                    Point point = new Point(new Coordinate((double)j + startSample, data[j]), "");
                     points.add(point);
                 }
                 trace.setPoints(points);

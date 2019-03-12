@@ -28,19 +28,6 @@
             ]
         },
         {
-            "id": 16,
-            "block1": 10,
-            "connector1": [
-                "EEGData",
-                "output"
-            ],
-            "block2": 8,
-            "connector2": [
-                "EEGData",
-                "input"
-            ]
-        },
-        {
             "id": 13,
             "block1": 8,
             "connector1": [
@@ -67,13 +54,13 @@
             ]
         },
         {
-            "id": 15,
-            "block1": 1,
+            "id": 18,
+            "block1": 14,
             "connector1": [
                 "EEGData",
                 "output"
             ],
-            "block2": 10,
+            "block2": 8,
             "connector2": [
                 "EEGData",
                 "input"
@@ -82,15 +69,13 @@
     ],
     "blocks": [
         {
-            "id": 1,
-            "x": -601,
-            "y": -112,
-            "type": "OffLineDataProvider",
+            "id": 14,
+            "x": -665.10782996015,
+            "y": -122.65262350589052,
+            "type": "LSLDataProvider",
             "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
             "values": {
-                "EEG File": [
-                    "C:/Users/lvareka/Documents/GitHub/workflow_designer_samples/workflow_designer_samples/EEGWorkflow/src/test/resources/data/P300/LED_28_06_2012_104.eeg"
-                ]
+                "Buffer size": "5000"
             }
         },
         {
@@ -100,7 +85,7 @@
             "type": "EEGMarkerBlock",
             "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
             "values": {
-                "Name": "S  2",
+                "Name": "2",
                 "Offset": "0"
             }
         },
@@ -114,16 +99,16 @@
         },
         {
             "id": 4,
-            "x": -37.85906040268446,
-            "y": -53.73825503355701,
+            "x": -41.774981622385326,
+            "y": 48.07569667866386,
             "type": "AveragingBlock",
             "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
             "values": {}
         },
         {
             "id": 8,
-            "x": -410.97986577181206,
-            "y": -112.23489932885903,
+            "x": -399.8847556493264,
+            "y": -135.07777311044705,
             "type": "EpochExtraction",
             "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
             "values": {
@@ -133,26 +118,13 @@
         },
         {
             "id": 9,
-            "x": -225.91275167785238,
-            "y": -117.14093959731545,
+            "x": -212.2070274088996,
+            "y": -134.76258508596908,
             "type": "BaselineCorrection",
             "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
             "values": {
                 "EndTime": "50",
                 "StartTime": "0"
-            }
-        },
-        {
-            "id": 10,
-            "x": -503.19009923707915,
-            "y": 14.315264154190402,
-            "type": "ChannelSelection",
-            "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
-            "values": {
-                "channels": [
-                    "Pz",
-                    ""
-                ]
             }
         }
     ]

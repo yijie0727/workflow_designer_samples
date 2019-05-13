@@ -25,7 +25,25 @@ Current Version of Library: v1.15
 
   - The EEGDataAnalytics project is an Apache Spark based project
   - The original project is available here [https://github.com/NEUROINFORMATICS-GROUP-FAV-KIV-ZCU/EEG_DataAnalysisPackage]
-  - Compare the source code of this project and how it has been modified to fit into the workflow designer design pattern.
+  - Compare the source code of this project and how i### Copyright
+
+ 
+  This file is part of the Workflow Designer project
+
+  ==========================================
+ 
+  Copyright (C) 2018 by University of West Bohemia (http://www.zcu.cz/en/)
+ 
+ ***********************************************************************************************************************
+ 
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+  the License. You may obtain a copy of the License at
+ 
+      http://www.apache.org/licenses/LICENSE-2.0
+ 
+  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+  an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.t has been modified to fit into the workflow designer design pattern.
   - This is a nice place to understand how the runAsJar feature works.
   - Check that the classes are all serializable
   - Note: You will need a hadoop cluster to run this project
@@ -41,4 +59,24 @@ Current Version of Library: v1.15
   - This is a great place for advanced users to understand the real merit of the project
  
 For more information visit http://www.zedacross.com/gsoc2018/
+
+### Copyright
+
+ 
+  This file is part of the Workflow Designer project
+
+  ==========================================
+ 
+  Copyright (C) 2018 by University of West Bohemia (http://www.zcu.cz/en/)
+ 
+ ***********************************************************************************************************************
+ 
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+  the License. You may obtain a copy of the License at
+ 
+      http://www.apache.org/licenses/LICENSE-2.0
+ 
+  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+  an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
 

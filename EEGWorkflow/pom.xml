@@ -165,7 +165,7 @@
 		<dependency>
 			<groupId>cz.zcu.kiv</groupId>
 			<artifactId>workflow_designer</artifactId>
-			<version>1.17</version>
+			<version>1.18</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.python/jython -->
@@ -180,9 +180,12 @@
 			<artifactId>jackson-dataformat-xml</artifactId>
 			<version>2.9.8</version>
 		</dependency>
-		
-		
-		
+
+		<dependency>
+			<groupId>nz.ac.waikato</groupId>
+			<artifactId>weka</artifactId>
+			<version>1.0</version>
+		</dependency>
 		
 		<!--  added to resolve problem -->
 		<!-- <dependency>

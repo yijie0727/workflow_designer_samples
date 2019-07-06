@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
@@ -62,8 +63,32 @@ public class ChainTest {
         assert jsonArray !=null;
     }
 
+    @Test
+    public void testEEGTestJSON() throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, FieldMismatchException, InterruptedException, ExecutionException {
+
+        String json = FileUtils.readFileToString(new File("src/test/resources/EEGTest.json"), Charset.defaultCharset());
+
+        JSONObject jsonObject = new JSONObject(json);
+        File outputFile = File.createTempFile("EEGTest__", ".json");
+        //outputFile.deleteOnExit();
+
+        JSONArray blocksArray = jsonObject.getJSONArray("blocks");
+        List<String> blockTypes = new ArrayList<>();
+        for (int i = 0; i < blocksArray.length(); i++) {
+            JSONObject blockObject = blocksArray.getJSONObject(i);
+            blockTypes.add(blockObject.getString("type"));
+        }
+        Map<Class, String> moduleSource = new HashMap<>();
+        PackageClass.assignModuleSource(moduleSource, blockTypes);
 
 
+        JSONArray jsonArray = new BlockWorkFlow(ClassLoader.getSystemClassLoader(), moduleSource, null, "src/test/resources/data", 5).execute(jsonObject, "test_data", outputFile.getAbsolutePath());
+        for (Object o : jsonArray) {
+            System.out.println(o);
+        }
+
+
+    }
 
 
 

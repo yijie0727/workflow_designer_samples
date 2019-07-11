@@ -29,8 +29,8 @@ public class OffLineDataStreamProviderBlock implements Serializable {
     @BlockProperty(name = "EEG File", type = Type.FILE_ARRAY)
     private List<File> eegFileInputs;
 
-    @BlockOutput(name = "EEGData", type = "EEGDataList")
-    private EEGDataPackageList eegDataPackageList;
+//    @BlockOutput(name = "EEGData", type = "EEGDataList")
+//    private EEGDataPackageList eegDataPackageList;
 
     @BlockOutput(name = "EEGDataStreams", type = STREAM)
     private ObjectInputStream EEGsOIS;
@@ -116,13 +116,7 @@ public class OffLineDataStreamProviderBlock implements Serializable {
         this.eegFileInputs = eegFileInputs;
     }
 
-    public EEGDataPackageList getEegDataPackageList() {
-        return eegDataPackageList;
-    }
 
-    public void setEegDataPackageList(EEGDataPackageList eegDataPackageList) {
-        this.eegDataPackageList = eegDataPackageList;
-    }
 
 
 

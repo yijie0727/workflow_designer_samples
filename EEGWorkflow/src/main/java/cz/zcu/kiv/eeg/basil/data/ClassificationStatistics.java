@@ -1,6 +1,8 @@
 package cz.zcu.kiv.eeg.basil.data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -22,6 +24,8 @@ public class ClassificationStatistics implements Serializable {
     private double class1sum;
     private double class2sum;
 
+    private ClassificationResults results;
+
     public ClassificationStatistics() {
         this.truePositives = 0;
         this.trueNegatives = 0;
@@ -31,6 +35,8 @@ public class ClassificationStatistics implements Serializable {
 
         this.class1sum = 0;
         this.class2sum = 0;
+
+        results = new ClassificationResults();
     }
 
     public ClassificationStatistics(int truePositives, int trueNegatives, int falsePositives, int falseNegatives) {
@@ -51,7 +57,8 @@ public class ClassificationStatistics implements Serializable {
         return (truePositives + trueNegatives + falsePositives + falseNegatives);
     }
 
-    public void add(double realOutput, double expectedOutput) {
+    public void add(double realOutput, double expectedOutput, String marker) {
+        int res = 0;
         this.MSE += Math.pow(expectedOutput - realOutput, 2);
         if (Math.round(expectedOutput) == 0 && Math.round(expectedOutput) == Math.round(realOutput)) {
             this.trueNegatives++;
@@ -60,12 +67,19 @@ public class ClassificationStatistics implements Serializable {
             this.falsePositives++;
             class1sum += realOutput;
         } else if (Math.round(expectedOutput) == 1 && Math.round(expectedOutput) == Math.round(realOutput)) {
+            res = 1;
             this.truePositives++;
             class2sum += realOutput;
         } else if (Math.round(expectedOutput) == 1 && Math.round(expectedOutput) != Math.round(realOutput)) {
             this.falseNegatives++;
             class2sum += realOutput;
         }
+
+        results.Add(expectedOutput, realOutput, marker, res);
+    }
+
+    public ClassificationResults getResults(){
+        return results;
     }
 
     @Override

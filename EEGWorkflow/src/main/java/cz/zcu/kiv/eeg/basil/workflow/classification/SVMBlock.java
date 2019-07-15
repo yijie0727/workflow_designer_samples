@@ -43,7 +43,10 @@ public class SVMBlock implements Serializable {
     @BlockExecute
     public Object process(){
         classifier = createClassifier();
-        createDataset(trainingEEGData);
+
+        if(trainingEEGData != null){
+            train(trainingEEGData, 100);
+        }
 
         if(testingEEGData != null) {
             createDataset(testingEEGData);
@@ -67,7 +70,7 @@ public class SVMBlock implements Serializable {
             options = weka.core.Utils.splitOptions("-S 0 -K 0 -C 425 -M 40.0 -W 1 -seed 1");
             classifier.setOptions(options);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Wrong input value! Check that input values are correct.");
+            throw new IllegalArgumentException(e);
         }
 
         return  classifier;
@@ -79,8 +82,9 @@ public class SVMBlock implements Serializable {
         try {
             classifier.buildClassifier(instances);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Fault during creating of dataset!");
+          throw new IllegalArgumentException(e);
         }
+
     }
 
     public double classify(FeatureVector fv) {
@@ -92,7 +96,7 @@ public class SVMBlock implements Serializable {
         try {
             predictedClassValue = this.classifier.classifyInstance(instances.lastInstance());
         } catch (Exception e) {
-            throw new IllegalArgumentException("Fault during classifying one of the epoch! Try to check dataset.");
+            throw new IllegalArgumentException(e);
         }
         return (Double) predictedClassValue;
     }
@@ -105,12 +109,12 @@ public class SVMBlock implements Serializable {
                 predictedClassValue = classifier.classifyInstance(instances
                         .instance(i));
             } catch (Exception e) {
-                throw new IllegalArgumentException("Fault during classifying one of the epoch! Try to check dataset.");
+                throw new IllegalArgumentException(e);
             }
             Object realClassValue = instances.instance(i).classValue();
             System.out.println(instances.instance(i).classValue());
             resultsStats.add((Double) realClassValue,
-                    (Double) predictedClassValue);
+                    (Double) predictedClassValue, "");
         }
 
         return resultsStats;
@@ -167,7 +171,7 @@ public class SVMBlock implements Serializable {
             convert.setInputFormat(instances);
             instances = Filter.useFilter(instances, convert);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Converting of numeric class index failed!");
+            throw new IllegalArgumentException(e);
         }
         instances.setClassIndex(numValues);
     }

@@ -1,6 +1,6 @@
 package cz.zcu.kiv.eeg.basil;
+import cz.zcu.kiv.WorkflowDesigner.BlockWorkFlow;
 import cz.zcu.kiv.WorkflowDesigner.FieldMismatchException;
-import cz.zcu.kiv.WorkflowDesigner.Workflow;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,7 +18,7 @@ import java.nio.charset.Charset;
 
  * ==========================================
  *
- * Copyright (C) 2018 by University of West Bohemia (http://www.zcu.cz/en/)
+ * Copyright (C) 2019 by University of West Bohemia (http://www.zcu.cz/en/)
  *
  ***********************************************************************************************************************
  *
@@ -33,7 +33,7 @@ import java.nio.charset.Charset;
  *
  ***********************************************************************************************************************
  *
- * WorkflowDesignerTest, 2018/17/05 6:32 Joey Pinto
+ * WorkflowDesignerTest, 2018/17/05 6:32 Joey Pinto, 2019 GSoC P2 Yijie Huang
  *
  * This test verifies the creation of all available blocks in the designer
  * The test.jar used for testing is the packaged version of the current project with its dependencies.
@@ -42,7 +42,7 @@ public class WorkflowDesignerTest {
 
     @Test
     public void testBlock() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        JSONArray blocksArray=new Workflow(ClassLoader.getSystemClassLoader(),":cz.zcu.kiv.eeg.basil",null,"").initializeBlocks();
+        JSONArray blocksArray=new BlockWorkFlow(ClassLoader.getSystemClassLoader(),":cz.zcu.kiv.eeg.basil",null,"").initializeBlocks();
         assert blocksArray.length() == 17;
     }
 

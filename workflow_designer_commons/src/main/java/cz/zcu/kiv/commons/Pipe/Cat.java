@@ -1,6 +1,8 @@
 package cz.zcu.kiv.commons.Pipe;
 
-public class Cat {
+import java.io.Serializable;
+
+public class Cat implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

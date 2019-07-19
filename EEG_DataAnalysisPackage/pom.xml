@@ -169,7 +169,7 @@
         <dependency>
             <groupId>cz.zcu.kiv</groupId>
             <artifactId>workflow_designer</artifactId>
-            <version>1.15</version>
+            <version>1.18</version>
         </dependency>
 
 

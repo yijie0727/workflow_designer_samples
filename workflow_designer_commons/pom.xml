@@ -56,6 +56,18 @@
       <artifactId>exp4j</artifactId>
       <version>0.4.8</version>
     </dependency>
+      <dependency>
+          <groupId>cz.zcu.kiv.eeg.basil</groupId>
+          <artifactId>basil_bci</artifactId>
+          <version>1.2.0</version>
+          <scope>compile</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.json</groupId>
+          <artifactId>json</artifactId>
+          <version>20131018</version>
+          <scope>test</scope>
+      </dependency>
 
   </dependencies>
 	<repositories>

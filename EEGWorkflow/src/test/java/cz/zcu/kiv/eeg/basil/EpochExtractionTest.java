@@ -22,7 +22,7 @@ public class EpochExtractionTest {
     public void textEpochExtractionBlock() throws Exception {
         OffLineDataProviderBlock provider = new OffLineDataProviderBlock();
         ArrayList<File> files = new ArrayList<>();
-        files.add(new File("E:\\IntelliJ\\Projects\\Basil_BCI\\src\\main\\resources\\data\\numbers\\17ZS\\17ZS_14_4_2015_02.eeg"));
+        files.add(new File("src/test/resources/data/numbers/17ZS/17ZS_14_4_2015_02.eeg"));
         provider.setEegFileInputs(files);
 
         provider.process();

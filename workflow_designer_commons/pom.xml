@@ -6,7 +6,7 @@
 
   <groupId>cz.zcu.kiv</groupId>
   <artifactId>commons</artifactId>
-  <version>1.1</version>
+  <version>1.2</version>
     <packaging>jar</packaging>
     <name>workflow_designer_commons</name>
   <build>
@@ -48,8 +48,8 @@
   <dependencies>
     <dependency>
       <groupId>cz.zcu.kiv</groupId>
-      <artifactId>workflow_designer</artifactId> 
-      <version>1.20</version> 
+      <artifactId>workflow_designer</artifactId>
+      <version>1.30</version>
     </dependency>
     <dependency>
       <groupId>net.objecthunter</groupId>

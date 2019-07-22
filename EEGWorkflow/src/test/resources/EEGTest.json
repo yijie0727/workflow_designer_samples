@@ -1,0 +1,274 @@
+{
+  "edges": [
+    {
+      "id": 6,
+      "block1": 1,
+      "connector1": [
+        "EEGData",
+        "output"
+      ],
+      "block2": 3,
+      "connector2": [
+        "EEGData",
+        "input"
+      ]
+    },
+    {
+      "id": 10,
+      "block1": 3,
+      "connector1": [
+        "EEGData",
+        "output"
+      ],
+      "block2": 4,
+      "connector2": [
+        "EEGData",
+        "input"
+      ]
+    },
+    {
+      "id": 14,
+      "block1": 4,
+      "connector1": [
+        "EEGData",
+        "output"
+      ],
+      "block2": 5,
+      "connector2": [
+        "EEGData",
+        "input"
+      ]
+    },
+    {
+      "id": 15,
+      "block1": 5,
+      "connector1": [
+        "EEGData",
+        "output"
+      ],
+      "block2": 6,
+      "connector2": [
+        "EEGData",
+        "input"
+      ]
+    },
+    {
+      "id": 26,
+      "block1": 10,
+      "connector1": [
+        "FeatureVectors",
+        "output"
+      ],
+      "block2": 12,
+      "connector2": [
+        "TestingFeatureVectors",
+        "input"
+      ]
+    },
+    {
+      "id": 25,
+      "block1": 10,
+      "connector1": [
+        "FeatureVectors",
+        "output"
+      ],
+      "block2": 12,
+      "connector2": [
+        "TrainingFeatureVectors",
+        "input"
+      ]
+    },
+    {
+      "id": 22,
+      "block1": 6,
+      "connector1": [
+        "EEGData",
+        "output"
+      ],
+      "block2": 9,
+      "connector2": [
+        "EEGData",
+        "input"
+      ]
+    },
+    {
+      "id": 23,
+      "block1": 8,
+      "connector1": [
+        "marker",
+        "output"
+      ],
+      "block2": 10,
+      "connector2": [
+        "Markers",
+        "input",
+        0
+      ]
+    },
+    {
+      "id": 24,
+      "block1": 9,
+      "connector1": [
+        "FeatureVectors",
+        "output"
+      ],
+      "block2": 10,
+      "connector2": [
+        "FeatureVectors",
+        "input"
+      ]
+    },
+    {
+      "id": 28,
+      "block1": 13,
+      "connector1": [
+        "LayerChain",
+        "output"
+      ],
+      "block2": 12,
+      "connector2": [
+        "Layers",
+        "input"
+      ]
+    },
+    {
+      "id": 29,
+      "block1": 11,
+      "connector1": [
+        "LayerChain",
+        "output"
+      ],
+      "block2": 13,
+      "connector2": [
+        "LayerChain",
+        "input"
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "id": 1,
+      "x": -475.8626244665718,
+      "y": -5.808285917496477,
+      "type": "OffLineDataProvider",
+      "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+      "values": {
+        "EEG File": [
+          "P1401/17ZS_14_4_2015_02.eeg"
+        ]
+      }
+    },
+    {
+      "id": 12,
+      "x": 660.1582679163153,
+      "y": 19.02384935574861,
+      "type": "NeuralNetClassifier",
+      "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+      "values": {}
+    },
+    {
+      "id": 3,
+      "x": -333.50105715763607,
+      "y": -148.14785658864602,
+      "type": "ChannelSelection",
+      "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+      "values": {
+        "channels": [
+          "Fz",
+          "Cz",
+          "Pz"
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "x": -228.75547652916077,
+      "y": -8.787908961593217,
+      "type": "FilterBlock",
+      "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+      "values": {
+        "Lower cutoff frequency": "0.1",
+        "High cutoff frequency": "20"
+      }
+    },
+    {
+      "id": 5,
+      "x": -67.25284495021333,
+      "y": -109.01358463726888,
+      "type": "EpochExtraction",
+      "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+      "values": {
+        "PreStimulus onset": "-100",
+        "PostStimulus onset": "1000"
+      }
+    },
+    {
+      "id": 6,
+      "x": 94.37204836415367,
+      "y": -4.572129186602865,
+      "type": "BaselineCorrection",
+      "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+      "values": {
+        "EndTime": "100",
+        "StartTime": "0"
+      }
+    },
+    {
+      "id": 11,
+      "x": -58.5493963736817,
+      "y": 138.3442070799166,
+      "type": "NeuralNetworkLayer",
+      "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+      "values": {
+        "NumberOfOutputs": "12",
+        "ActivationFunction": "relu",
+        "LayerType": "auto_encoder",
+        "LossFunction": "xent",
+        "NumberOfInputs": "48",
+        "DropOut": ""
+      }
+    },
+    {
+      "id": 8,
+      "x": 355.4603971868979,
+      "y": -184.994562933569,
+      "type": "EEGMarkerBlock",
+      "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+      "values": {
+        "Name": "S  2",
+        "Offset": "-1"
+      }
+    },
+    {
+      "id": 9,
+      "x": 265.1247528130708,
+      "y": -29.30562627888804,
+      "type": "WaveletTransformBlock",
+      "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+      "values": {}
+    },
+    {
+      "id": 10,
+      "x": 449.4412206876834,
+      "y": -69.30336113957415,
+      "type": "FeatureLabelingBlock",
+      "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+      "values": {}
+    },
+    {
+      "id": 13,
+      "x": 194.4558030082028,
+      "y": 104.80565970028243,
+      "type": "NeuralNetworkLayer",
+      "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+      "values": {
+        "NumberOfOutputs": "2",
+        "ActivationFunction": "softmax",
+        "LayerType": "output",
+        "LossFunction": "negativeloglikelihood",
+        "NumberOfInputs": "12",
+        "DropOut": ""
+      }
+    }
+  ]
+}

@@ -9,9 +9,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 
+import static cz.zcu.kiv.WorkflowDesigner.Type.FILE;
+
 @BlockType(type="FileToString",family = "IOUtils")
 public class FileToString implements Serializable {
-    @BlockProperty(name = "File", type = "file" ,defaultValue = "")
+    @BlockProperty(name = "File", type = FILE ,defaultValue = "")
     private File fileInput;
 
     @BlockOutput(name="String", type=Type.STRING)

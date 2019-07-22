@@ -56,6 +56,40 @@
       <artifactId>exp4j</artifactId>
       <version>0.4.8</version>
     </dependency>
+      <dependency>
+          <groupId>cz.zcu.kiv.eeg.basil</groupId>
+          <artifactId>basil_bci</artifactId>
+          <version>1.2.0</version>
+          <scope>compile</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.json</groupId>
+          <artifactId>json</artifactId>
+          <version>20131018</version>
+          <scope>test</scope>
+      </dependency>
 
   </dependencies>
+	<repositories>
+		<!-- Nexus repository for in-house libs and jars not available in public
+			repos -->
+		<repository>
+			<id>releases</id>
+			<url>http://eeg.kiv.zcu.cz:8081/nexus/content/repositories/releases/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/releases/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 </project>

@@ -40,7 +40,13 @@
         <dependency>
             <groupId>cz.zcu.kiv</groupId>
             <artifactId>workflow_designer</artifactId>
-            <version>1.16</version>
+            <version>1.17</version>
+        </dependency>
+        <dependency>
+            <groupId>cz.zcu.kiv.eeg.basil</groupId>
+            <artifactId>basil_bci</artifactId>
+            <version>1.2.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

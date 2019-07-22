@@ -2,9 +2,11 @@ package cz.zcu.kiv.eeg.basil.workflow.classification;
 
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockExecute;
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockInput;
+import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockOutput;
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockType;
 import cz.zcu.kiv.WorkflowDesigner.Visualizations.Table;
 import cz.zcu.kiv.eeg.basil.data.ClassificationStatistics;
+import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
 import cz.zcu.kiv.eeg.basil.data.EEGMarker;
 import cz.zcu.kiv.eeg.basil.data.FeatureVector;
 
@@ -35,6 +37,9 @@ public class NeuralNetClassifierBlock implements Serializable {
     @BlockInput(name="Layers", type="NeuralNetworkLayerChain")
     private NeuralNetworkLayerChain layerChain;
 
+    @BlockOutput(name="ClassificationResult", type ="ClassificationStatistics")
+    private ClassificationStatistics statistics;
+
 	public NeuralNetClassifierBlock(){
 		//Required Empty Default Constructor for Workflow Designer
 	}
@@ -49,7 +54,7 @@ public class NeuralNetClassifierBlock implements Serializable {
         	for (FeatureVector featureVector: testingEEGData) {
         		expectedLabels.add(featureVector.getExpectedOutput());
         	}
-            ClassificationStatistics statistics = classification.test(testingEEGData, expectedLabels);
+            statistics = classification.test(testingEEGData, expectedLabels);
             return statistics.toString();
 
         }
@@ -88,6 +93,4 @@ public class NeuralNetClassifierBlock implements Serializable {
     public void setTrainingEEGData(List<FeatureVector> trainingEEGData) {
         this.trainingEEGData = trainingEEGData;
     }
-
-
 }

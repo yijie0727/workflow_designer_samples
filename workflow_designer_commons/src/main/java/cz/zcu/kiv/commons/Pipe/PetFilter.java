@@ -35,7 +35,7 @@ public class PetFilter {
         Pet pet1;
         Pet pet2;
         while ((pet1 = (Pet) objectInStream1.readObject())!= null) {
-            System.out.println(pet1.getType()+": "+pet1.getName());
+            //System.out.println(pet1.getType()+": "+pet1.getName());
 
             if (petType == null || petType.length() == 0 || petType.equals(pet1.getType())) {
                 objectOutStream.writeObject(pet1);
@@ -50,7 +50,7 @@ public class PetFilter {
                 objectOutStream.flush();
             }
 
-            System.out.println(pet2.getType()+": "+pet2.getName());
+            //System.out.println(pet2.getType()+": "+pet2.getName());
         }
 
 

@@ -7,17 +7,17 @@ import java.io.*;
 import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
 import static cz.zcu.kiv.WorkflowDesigner.Type.STRING;
 
-@BlockType(type ="PetFilter", family = "PIPE", continuousFlag = true)
+@BlockType(type ="PetFilter", family = "PIPE")
 public class PetFilter {
 
 
     @BlockProperty(name = "targetPetType", type = STRING, description = "Enter the pet type you want to get(example: cat)")
     String petType;
 
-    @BlockInput(name = "petsIn1", type = STREAM)
+    @BlockInput(name = "pets1", type = STREAM)
     PipedInputStream pipedIn1   = new PipedInputStream();
 
-    @BlockInput(name = "petsIn2", type = STREAM)
+    @BlockInput(name = "pets2", type = STREAM)
     PipedInputStream pipedIn2   = new PipedInputStream();
 
     @BlockOutput(name = "targetPets", type = STREAM)
@@ -35,6 +35,7 @@ public class PetFilter {
         Pet pet1;
         Pet pet2;
         while ((pet1 = (Pet) objectInStream1.readObject())!= null) {
+            System.out.println(pet1.getType()+": "+pet1.getName());
 
             if (petType == null || petType.length() == 0 || petType.equals(pet1.getType())) {
                 objectOutStream.writeObject(pet1);
@@ -48,6 +49,8 @@ public class PetFilter {
                 objectOutStream.writeObject(pet2);
                 objectOutStream.flush();
             }
+
+            System.out.println(pet2.getType()+": "+pet2.getName());
         }
 
 

@@ -14,8 +14,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.Constants.STRING;
+
 import static cz.zcu.kiv.WorkflowDesigner.Type.NUMBER;
+import static cz.zcu.kiv.WorkflowDesigner.Type.STRING;
 
 @BlockType(type="NeuralNetworkLayer", family = "classification", runAsJar = true)
 public class NeuralNetworkLayerChain implements Serializable {

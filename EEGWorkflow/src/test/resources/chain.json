@@ -86,7 +86,7 @@
             "x": -601,
             "y": -112,
             "type": "OffLineDataProvider",
-            "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "module": "basil_bci-1.3.1-jar-with-dependencies.jar:cz.zcu.kiv",
             "values": {
                 "EEG File": [
                     "P300/LED_28_06_2012_104.eeg"
@@ -98,7 +98,7 @@
             "x": -517,
             "y": 107,
             "type": "EEGMarkerBlock",
-            "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "module": "basil_bci-1.3.1-jar-with-dependencies.jar:cz.zcu.kiv",
             "values": {
                 "Name": "S  2",
                 "Offset": "0"
@@ -109,7 +109,7 @@
             "x": 148.63087248322154,
             "y": -55.12080536912751,
             "type": "EEGPlot",
-            "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "module": "basil_bci-1.3.1-jar-with-dependencies.jar:cz.zcu.kiv",
             "values": {}
         },
         {
@@ -117,7 +117,7 @@
             "x": -37.85906040268446,
             "y": -53.73825503355701,
             "type": "AveragingBlock",
-            "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "module": "basil_bci-1.3.1-jar-with-dependencies.jar:cz.zcu.kiv",
             "values": {}
         },
         {
@@ -125,7 +125,7 @@
             "x": -410.97986577181206,
             "y": -112.23489932885903,
             "type": "EpochExtraction",
-            "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "module": "basil_bci-1.3.1-jar-with-dependencies.jar:cz.zcu.kiv",
             "values": {
                 "PreStimulus onset": "-100",
                 "PostStimulus onset": "1000"
@@ -136,7 +136,7 @@
             "x": -225.91275167785238,
             "y": -117.14093959731545,
             "type": "BaselineCorrection",
-            "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "module": "basil_bci-1.3.1-jar-with-dependencies.jar:cz.zcu.kiv",
             "values": {
                 "EndTime": "50",
                 "StartTime": "0"
@@ -147,7 +147,7 @@
             "x": -503.19009923707915,
             "y": 14.315264154190402,
             "type": "ChannelSelection",
-            "module": "basil_bci-1.2.0-jar-with-dependencies.jar:cz.zcu.kiv",
+            "module": "basil_bci-1.3.1-jar-with-dependencies.jar:cz.zcu.kiv",
             "values": {
                 "channels": [
                     "Pz",

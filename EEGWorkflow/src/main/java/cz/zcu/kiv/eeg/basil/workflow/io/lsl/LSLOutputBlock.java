@@ -1,6 +1,8 @@
 package cz.zcu.kiv.eeg.basil.workflow.io.lsl;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.PipedInputStream;
 import java.util.List;
 
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockExecute;
@@ -25,20 +27,24 @@ public class LSLOutputBlock {
 	/**
 	 * Input data to be streamed
 	 */
-	@BlockInput(name = "EEGData", type = "EEGDataList")
+
+	@BlockInput(name = "EEGData", type = "EEGDataPipeStream")
+	private PipedInputStream eegPipeIn = new PipedInputStream();
+
 	private EEGDataPackageList eegDataPackageList;
-	
+
 	@BlockExecute
-	public void process() throws IOException, InterruptedException {
-		if (this.eegDataPackageList == null) {
-			return;
-		}
-		List<EEGDataPackage> eegDataPackages = this.eegDataPackageList.getEegDataPackage();
+	public void process() throws IOException, InterruptedException, ClassNotFoundException {
+
+		ObjectInputStream eegObjectIn = new ObjectInputStream(eegPipeIn);
+		EEGDataPackage eegDataObj = (EEGDataPackage) eegObjectIn.readObject();
+		if(eegDataObj == null) return;
+
 		int nchannels = 0;
 		double srate  = 0;
-		if (eegDataPackages.size() > 0 && eegDataPackages.get(0).getConfiguration() != null) {
-			nchannels = eegDataPackages.get(0).getData().length;
-			srate     = eegDataPackages.get(0).getConfiguration().getSamplingInterval();
+		if(eegDataObj.getConfiguration() != null) {
+			nchannels = eegDataObj.getData().length;
+			srate     = eegDataObj.getConfiguration().getSamplingInterval();
 		}
 				
 		
@@ -51,22 +57,32 @@ public class LSLOutputBlock {
 		 
 		LSLMarkerOutput markerOutput = new LSLMarkerOutput(outletMarkers);
 		LSLEEGOutput eegOutput = new LSLEEGOutput(outletEEG);
-				
+
+		setData(eegDataObj, markerOutput, eegOutput);
+
 		// send data
-		for (EEGDataPackage eegDataPackage: eegDataPackages) {
-			double[][] data 		= eegDataPackage.getData();
-			List<EEGMarker> markers = eegDataPackage.getMarkers();
-						
-			markerOutput.setData(markers);
-			markerOutput.start();
-			
-			eegOutput.setData(data);
-			eegOutput.start();
-			
-			eegOutput.join();
-			markerOutput.join();
-			
+		while ((eegDataObj = (EEGDataPackage) eegObjectIn.readObject())!= null) {
+			setData(eegDataObj, markerOutput, eegOutput);
 		}
+
+		eegObjectIn.close();
+		eegPipeIn.close();
+	}
+
+
+	private void setData(EEGDataPackage eegDataPackage, LSLMarkerOutput markerOutput, LSLEEGOutput eegOutput) throws InterruptedException {
+		double[][] data 		= eegDataPackage.getData();
+		List<EEGMarker> markers = eegDataPackage.getMarkers();
+
+		markerOutput.setData(markers);
+		markerOutput.start();
+
+		eegOutput.setData(data);
+		eegOutput.start();
+
+		eegOutput.join();
+		markerOutput.join();
+
 	}
 
 	public EEGDataPackageList getEegDataPackageList() {
@@ -76,7 +92,5 @@ public class LSLOutputBlock {
 	public void setEegDataPackageList(EEGDataPackageList eegDataPackageList) {
 		this.eegDataPackageList = eegDataPackageList;
 	}
-	
-	
 
 }

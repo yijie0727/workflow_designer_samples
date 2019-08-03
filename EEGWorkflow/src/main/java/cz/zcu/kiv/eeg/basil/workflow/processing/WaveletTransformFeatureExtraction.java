@@ -16,7 +16,7 @@ import cz.zcu.kiv.eegdsp.wavelet.discrete.WaveletResultDiscrete;
 import cz.zcu.kiv.eegdsp.wavelet.discrete.WaveletTransformationDiscrete;
 import cz.zcu.kiv.eegdsp.wavelet.discrete.algorithm.wavelets.WaveletDWT;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,12 +52,12 @@ import java.util.List;
 	private int numberOfChannels = 0;
 
 	private ISignalProcessor dwt;
-	
-	@BlockInput(name = "EEGData", type = "EEGDataList")
-	private EEGDataPackageList epochs;
 
-	@BlockOutput(name = "FeatureVectors", type = "List<FeatureVector>")
-	private List<FeatureVector> featureVectors;
+	@BlockInput (name = "EEGData", type = "EEGDataPipeStream")
+	private PipedInputStream eegPipeIn = new PipedInputStream();
+
+	@BlockOutput(name = "FeatureVectors", type = "FeatureVectorPipeStream")
+	private PipedOutputStream featureVecPipeOut = new PipedOutputStream();
 
 	/**
 	 * Constructor for the wavelet transform feature extraction with default
@@ -65,7 +65,7 @@ import java.util.List;
 	 */
 	public WaveletTransformFeatureExtraction() {
 		this.NAME = 8;
-		this.featureVectors = new ArrayList<FeatureVector>();
+		//this.featureVectors = new ArrayList<FeatureVector>();
 		setupDwt();
 	}
 	
@@ -106,12 +106,26 @@ import java.util.List;
 	
 	
 	@BlockExecute
-    public void process(){
-		List<EEGDataPackage> inputDataPackages = epochs.getEegDataPackage();
-		for (EEGDataPackage dataPackage: inputDataPackages) {
+    public void process() throws IOException, ClassNotFoundException {
+
+		ObjectInputStream  eegObjectIn  = new ObjectInputStream(eegPipeIn);
+		ObjectOutputStream featureVecObjectOut = new ObjectOutputStream(featureVecPipeOut);
+
+		EEGDataPackage dataPackage;
+		while ((dataPackage = (EEGDataPackage) eegObjectIn.readObject())!= null) {
 			FeatureVector outputVector = extractFeatures(dataPackage);
-			this.featureVectors.add(outputVector);
+
+			featureVecObjectOut.writeObject(outputVector);
+			featureVecObjectOut.flush();
 		}
+
+		featureVecObjectOut.writeObject(null);
+		featureVecObjectOut.flush();
+
+		eegObjectIn.close();
+		featureVecObjectOut.close();
+		eegPipeIn.close();
+		featureVecPipeOut.close();
     }
 
 

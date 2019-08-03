@@ -5,7 +5,8 @@ import cz.zcu.kiv.eeg.basil.data.EEGDataPackage;
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
 import cz.zcu.kiv.eeg.basil.utils.SignalProcessing;
 
-import java.io.Serializable;
+import java.io.*;
+import java.util.ArrayList;
 
 import static cz.zcu.kiv.WorkflowDesigner.Type.NUMBER;
 
@@ -26,8 +27,12 @@ public class BaselineCorrectionBlock implements Serializable {
     @BlockProperty(name="EndTime",type = NUMBER, defaultValue = "")
 	private double endTime;   /* in milliseconds */
 
-	@BlockInput(name = "EEGData", type = "EEGDataList")
-	@BlockOutput(name = "EEGData", type = "EEGDataList")
+	@BlockInput(name = "EEGData", type = "EEGDataPipeStream")
+	private PipedInputStream eegPipeIn  = new PipedInputStream();
+
+	@BlockOutput(name = "EEGData", type = "EEGDataPipeStream")
+	private PipedOutputStream eegPipeOut = new PipedOutputStream();
+
 	private EEGDataPackageList eegDataPackageList=null;
 
 	public BaselineCorrectionBlock(){
@@ -35,25 +40,38 @@ public class BaselineCorrectionBlock implements Serializable {
 	}
 
 	@BlockExecute
-	public void process(){
-	    for(EEGDataPackage eegData:eegDataPackageList.getEegDataPackage()){
-            double[][] data = eegData.getData();
+	public void process() throws Exception{
 
-            // for all channels
-            for (int i = 0; i < data.length; i++) {
-                double sampling = eegData.getConfiguration().getSamplingInterval();
-                // calculate the baseline only in the requested interval
-                int start = (int) (0.001 * startTime * sampling);
-                int end = (int) (0.001 * endTime * sampling);
-                double averageBaseline = SignalProcessing.average(data[i], start, end);
+		ObjectInputStream  eegObjectIn  = new ObjectInputStream(eegPipeIn);
+		ObjectOutputStream eegObjectOut = new ObjectOutputStream(eegPipeOut);
 
-                // subtract the baseline from the rest of the signal
-                for (int j = 0; j < data[i].length; j++) {
-                    data[i][j] = data[i][j] - averageBaseline;
-                }
-            }
-        }
+		EEGDataPackage eegData;
+		while ((eegData = (EEGDataPackage) eegObjectIn.readObject())!= null) {
+			double[][] data = eegData.getData();
 
+			// for all channels
+			for (int i = 0; i < data.length; i++) {
+				double sampling = eegData.getConfiguration().getSamplingInterval();
+				// calculate the baseline only in the requested interval
+				int start = (int) (0.001 * startTime * sampling);
+				int end = (int) (0.001 * endTime * sampling);
+				double averageBaseline = SignalProcessing.average(data[i], start, end);
+
+				// subtract the baseline from the rest of the signal
+				for (int j = 0; j < data[i].length; j++) {
+					data[i][j] = data[i][j] - averageBaseline;
+				}
+			}
+			eegObjectOut.writeObject(eegData);
+			eegObjectOut.flush();
+		}
+		eegObjectOut.writeObject(null);
+		eegObjectOut.flush();
+
+		eegObjectOut.close();
+		eegObjectIn.close();
+		eegPipeOut.close();
+		eegPipeIn.close();
     }
 
 	public double getStartTime() {

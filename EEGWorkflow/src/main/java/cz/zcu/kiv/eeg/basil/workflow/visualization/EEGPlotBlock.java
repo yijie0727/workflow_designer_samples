@@ -8,6 +8,8 @@ import cz.zcu.kiv.eeg.basil.data.Configuration;
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackage;
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
 
+import java.io.ObjectInputStream;
+import java.io.PipedInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +17,13 @@ import java.util.List;
 @BlockType(type="EEGPlot",family="Visualization", runAsJar = true)
 public class EEGPlotBlock implements Serializable {
 
-    @BlockInput(name = "EEGData", type = "EEGDataList")
+    @BlockInput(name = "EEGData", type = "EEGDataPipeStream")
+    private PipedInputStream eegPipeIn  = new PipedInputStream();
+
     private EEGDataPackageList eegDataList;
 
     @BlockExecute
-    public Graph process(){
+    public Graph process() throws Exception {
         Graph graph=new Graph();
         Layout layout=new Layout();
         layout.setTitle("EEG signal visualization");
@@ -34,7 +38,13 @@ public class EEGPlotBlock implements Serializable {
         layout.setYaxis(yAxis);
         graph.setLayout(layout);
         List<Trace> traces=new ArrayList<>();
-        for(EEGDataPackage eegData:eegDataList.getEegDataPackage()){
+
+        ObjectInputStream eegObjectIn  = new ObjectInputStream(eegPipeIn);
+        EEGDataPackage eegData;
+        ArrayList<EEGDataPackage> list = new ArrayList<>();
+        while ((eegData = (EEGDataPackage) eegObjectIn.readObject())!= null) {
+            list.add(eegData);
+
             Configuration cfg = eegData.getConfiguration();
             int startSample =  (int)((0.001 * cfg.getPreStimulus()) /* time in s */ * cfg.getSamplingInterval());
             for (int i = 0; i < eegData.getData().length; i++) {
@@ -57,6 +67,11 @@ public class EEGPlotBlock implements Serializable {
                 
             }
         }
+        eegDataList = new EEGDataPackageList(list);
+
+        eegObjectIn.close();
+        eegPipeIn.close();
+
         graph.setTraces(traces);
         return graph;
     }

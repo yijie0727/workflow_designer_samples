@@ -8,7 +8,8 @@ import cz.zcu.kiv.eeg.basil.data.EEGDataPackage;
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
 import cz.zcu.kiv.eeg.basil.data.EEGMarker;
 
-import java.io.Serializable;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,10 +24,15 @@ public class AveragingBlock implements Serializable {
 	@BlockInput(name = "Markers",type="EEGMarker[]")
 	private List<EEGMarker> markers;
 
-	@BlockInput(name = "EEGData", type = "EEGDataList")
+	@BlockInput(name = "EEGData",  type = "EEGDataPipeStream")
+	private PipedInputStream eegPipeIn  = new PipedInputStream();
+
+	@BlockOutput(name = "EEGData", type = "EEGDataPipeStream")
+	private PipedOutputStream eegPipeOut = new PipedOutputStream();
+
+
 	private EEGDataPackageList epochs;
 
-	@BlockOutput(name = "EEGData", type = "EEGDataList")
 	private EEGDataPackageList eegData;
 
 	public AveragingBlock(){
@@ -34,9 +40,35 @@ public class AveragingBlock implements Serializable {
 	}
 
 	@BlockExecute
-    public void process(){
-	    eegData=new EEGDataPackageList(Arrays.asList(average(epochs.getEegDataPackage())));
-    }
+    public void process() throws Exception{
+
+		ObjectInputStream eegObjectIn  = new ObjectInputStream(eegPipeIn);
+
+		EEGDataPackage eeg;
+		ArrayList<EEGDataPackage> list = new ArrayList<>();
+System.out.println("before receive");
+		while ((eeg = (EEGDataPackage) eegObjectIn.readObject())!= null) {
+			list.add(eeg);
+System.out.println("while receive");
+		}
+		epochs = new EEGDataPackageList(list);
+System.out.println("after receive");
+		EEGDataPackage averageData = average(epochs.getEegDataPackage());
+
+		ObjectOutputStream eegObjectOut = new ObjectOutputStream(eegPipeOut);
+		eegObjectOut.writeObject(averageData);
+		eegObjectOut.flush();
+System.out.println("after send");
+		eegObjectOut.writeObject(null);
+		eegObjectOut.flush();
+
+		eegObjectOut.close();
+		eegObjectIn.close();
+		eegPipeOut.close();
+		eegPipeIn.close();
+
+		eegData= new EEGDataPackageList(Arrays.asList(averageData));
+	}
 
 	public EEGDataPackage average(List<EEGDataPackage> epochs) {
 		if (epochs == null || epochs.size() == 0 || this.markers == null)

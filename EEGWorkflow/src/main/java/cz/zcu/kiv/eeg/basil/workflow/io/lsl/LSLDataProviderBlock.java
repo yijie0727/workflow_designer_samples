@@ -1,6 +1,8 @@
 package cz.zcu.kiv.eeg.basil.workflow.io.lsl;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.PipedOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +38,16 @@ public class LSLDataProviderBlock implements Serializable  {
 	
 	@BlockProperty(name = "Buffer size", type = Type.NUMBER)
 	private int buffer_size = 5000; /* size of a single data block before  transferring to observers */
-    @BlockOutput(name = "EEGData", type = "EEGDataList")
-    private EEGDataPackageList eegDataPackageList;
-	
-	
+
+//	@BlockOutput(name = "EEGData", type = "EEGDataList")
+//	private EEGDataPackageList eegDataPackageList;
+
+	@BlockOutput(name = "EEGData", type = "EEGDataPipeStream")
+	private PipedOutputStream eegPipeOut = new PipedOutputStream();
+
+	ObjectOutputStream eegObjectOut;
+
+
 	private volatile double[][] data; /* data  - BLOCK */
 	private volatile List<EEGMarker> markers; /* stimuli markers */ 
 	private LSLEEGCollector eegCollector;   /* provider for EEG data */
@@ -60,13 +68,23 @@ public class LSLDataProviderBlock implements Serializable  {
 	
 	@BlockExecute
 	public void process() throws IOException, InterruptedException {
+
+		eegObjectOut = new ObjectOutputStream(eegPipeOut);
+
 		this.eegDataList = new ArrayList<>();
 		this.eegCollector.start();
 		this.markerCollector.start();
 		
 		this.eegCollector.join();
 		this.markerCollector.join();
-		eegDataPackageList = new EEGDataPackageList(eegDataList);
+		//eegDataPackageList = new EEGDataPackageList(eegDataList);
+
+
+		eegObjectOut.writeObject(null);
+		eegObjectOut.flush();
+
+		eegObjectOut.close();
+		eegPipeOut.close();
 	}
 
 		
@@ -82,7 +100,7 @@ public class LSLDataProviderBlock implements Serializable  {
 	 * @param eegSample
      * @param configuration 
 	 */
-	public synchronized void addEEGSample(float[] eegSample, Configuration configuration) {
+	public synchronized void addEEGSample(float[] eegSample, Configuration configuration) throws  IOException {
 		if (data == null) {
 			data = new double[eegSample.length][buffer_size];
 		}
@@ -96,7 +114,14 @@ public class LSLDataProviderBlock implements Serializable  {
 		/* if maximum size is reached, transfer the data */
 		if (dataPointer == buffer_size) {
 			EEGDataPackage dataPackage = new EEGDataPackage(data, markers, null, configuration);
-			this.eegDataList.add(dataPackage);
+			//this.eegDataList.add(dataPackage);
+
+
+			eegObjectOut.writeObject(dataPackage);
+			eegObjectOut.flush();
+
+
+
 			this.stop();
 		}
 	}
@@ -112,9 +137,9 @@ public class LSLDataProviderBlock implements Serializable  {
 	}
 
 
-	public EEGDataPackageList getEegDataPackageList() {
-		return eegDataPackageList;
-	}
+//	public EEGDataPackageList getEegDataPackageList() {
+//		return eegDataPackageList;
+//	}
 
 
 	

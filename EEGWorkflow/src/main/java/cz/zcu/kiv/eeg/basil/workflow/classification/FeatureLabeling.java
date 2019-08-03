@@ -1,5 +1,6 @@
 package cz.zcu.kiv.eeg.basil.workflow.classification;
 
+import java.io.*;
 import java.util.List;
 
 import cz.zcu.kiv.WorkflowDesigner.Type;
@@ -26,29 +27,47 @@ public class FeatureLabeling {
 	
 	@BlockInput(name = "Markers",type="EEGMarker[]")
 	private List<EEGMarker> targetMarkers; 
-	
-	
-	@BlockInput(name = "FeatureVectors", type = "List<FeatureVector>")
-	@BlockOutput(name = "FeatureVectors", type = "List<FeatureVector>")
-	private List<FeatureVector> featureVectors;
-	
-	
-	@BlockExecute
-	public void process() {
-		ITrainCondition trainCondition = new ErpTrainCondition();
-		for (FeatureVector featureVector : featureVectors) {
 
+	@BlockInput (name = "FeatureVectors", type = "FeatureVectorPipeStream")
+	private PipedInputStream featureVecPipeIn = new PipedInputStream();
+
+	@BlockOutput(name = "FeatureVectors", type = "FeatureVectorPipeStream")
+	private PipedOutputStream featureVecPipeOut = new PipedOutputStream();
+
+	@BlockExecute
+	public void process() throws IOException, ClassNotFoundException {
+		ITrainCondition trainCondition = new ErpTrainCondition();
+
+		ObjectInputStream  featureVecObjectIn  = new ObjectInputStream(featureVecPipeIn);
+		ObjectOutputStream featureVecObjectOut = new ObjectOutputStream(featureVecPipeOut);
+// System.out.println("10 before while");
+
+		FeatureVector featureVector;
+		while ((featureVector = (FeatureVector) featureVecObjectIn.readObject())!= null) {
+//System.out.println("10 in while");
 			String currentMarker;
 			if (featureVector == null || featureVector.getMarkers() == null || featureVector.getMarkers().get(0) == null)
 				continue;
 			currentMarker = featureVector.getMarkers().get(0).getName();
-		
+
 			for( EEGMarker markerBlock: targetMarkers) {
-                trainCondition.addSample(featureVector, markerBlock.getName(), currentMarker);
-            }
+				trainCondition.addSample(featureVector, markerBlock.getName(), currentMarker);
+//System.out.println("10 send ");
+				// finally, send feature vectors with labeled ones
+				featureVecObjectOut.writeObject(featureVector);
+				featureVecObjectOut.flush();
+			}
+
+
 		}
-		// finally, replace feature vectors with labeled ones
-		this.featureVectors = trainCondition.getFeatureVectors();
+
+		featureVecObjectOut.writeObject(null);
+		featureVecObjectOut.flush();
+
+		featureVecObjectIn.close();
+		featureVecObjectOut.close();
+		featureVecPipeIn.close();
+		featureVecPipeOut.close();
 	}
 
 }

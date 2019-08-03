@@ -1,5 +1,6 @@
 package cz.zcu.kiv.eeg.basil.workflow.classification;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.util.ModelSerializer;
 import org.nd4j.linalg.api.ndarray.INDArray;
@@ -8,7 +9,6 @@ import org.nd4j.linalg.factory.Nd4j;
 
 import cz.zcu.kiv.eeg.basil.data.ClassificationStatistics;
 import cz.zcu.kiv.eeg.basil.data.FeatureVector;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.*;
 import java.util.List;

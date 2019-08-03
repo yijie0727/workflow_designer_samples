@@ -4,7 +4,7 @@ import cz.zcu.kiv.WorkflowDesigner.Annotations.*;
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackage;
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,14 +16,23 @@ public class ChannelSelectionBlock implements Serializable {
     @BlockProperty(name="channels",type = STRING_ARRAY)
     private List<String> selectedChannels;
 
-    @BlockInput(name = "EEGData", type = "EEGDataList")
-    @BlockOutput(name = "EEGData", type = "EEGDataList")
     private EEGDataPackageList eegDataPackageList;
+
+    @BlockInput (name = "EEGData", type = "EEGDataPipeStream")
+    private PipedInputStream  eegPipeIn  = new PipedInputStream();
+
+    @BlockOutput(name = "EEGData", type = "EEGDataPipeStream")
+    private PipedOutputStream eegPipeOut = new PipedOutputStream();
 
 
     @BlockExecute
     public void process() throws Exception {
-        for(EEGDataPackage eegData:eegDataPackageList.getEegDataPackage()){
+
+        ObjectInputStream  eegObjectIn  = new ObjectInputStream(eegPipeIn);
+        ObjectOutputStream eegObjectOut = new ObjectOutputStream(eegPipeOut);
+
+        EEGDataPackage eegData;
+        while ((eegData = (EEGDataPackage) eegObjectIn.readObject())!= null) {
             String[] channels = eegData.getChannelNames();
             if (channels == null || channels.length == 0)
                 throw new Exception("No channels Selected"); // no channel selection possible - names missing in the data
@@ -50,8 +59,18 @@ public class ChannelSelectionBlock implements Serializable {
             eegData.setData(reducedData);
             String[] array = new String[selectedChannelNames.size()];
             eegData.setChannelNames(selectedChannelNames.toArray(array));
+
+            eegObjectOut.writeObject(eegData);
+            eegObjectOut.flush();
         }
 
+        eegObjectOut.writeObject(null);
+        eegObjectOut.flush();
+
+        eegObjectOut.close();
+        eegObjectIn.close();
+        eegPipeOut.close();
+        eegPipeIn.close();
     }
 
     public List<String> getSelectedChannels() {

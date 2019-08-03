@@ -5,7 +5,7 @@ import cz.zcu.kiv.eeg.basil.data.EEGDataPackage;
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
 import cz.zcu.kiv.eeg.basil.math.IirBandpassFilter;
 
-import java.io.Serializable;
+import java.io.*;
 
 import static cz.zcu.kiv.WorkflowDesigner.Type.NUMBER;
 
@@ -24,17 +24,25 @@ public class BandpassFilterBlock implements Serializable {
 
     private IirBandpassFilter filter;
 
-    @BlockOutput(name = "EEGData", type = "EEGDataList")
-    @BlockInput(name = "EEGData", type = "EEGDataList")
-    private EEGDataPackageList eegData;
+    @BlockInput (name = "EEGData", type = "EEGDataPipeStream")
+    private PipedInputStream  eegPipeIn = new PipedInputStream();
+
+    @BlockOutput(name = "EEGData", type = "EEGDataPipeStream")
+    private PipedOutputStream eegPipeOut = new PipedOutputStream();
+
 
     public BandpassFilterBlock(){
         //Required Empty Default Constructor for Workflow Designer
     }
 
     @BlockExecute
-    public void preprocess() {
-        for(EEGDataPackage pcg : eegData.getEegDataPackage()) {
+    public void preprocess() throws IOException, ClassNotFoundException {
+
+        ObjectInputStream  eegObjectIn  = new ObjectInputStream(eegPipeIn);
+        ObjectOutputStream eegObjectOut = new ObjectOutputStream(eegPipeOut);
+
+        EEGDataPackage pcg;
+        while ((pcg = (EEGDataPackage) eegObjectIn.readObject())!= null) {
             if (filter == null)
                 this.filter = new IirBandpassFilter(lowFreq, highFreq, (int) pcg.getConfiguration().getSamplingInterval());
 
@@ -47,6 +55,16 @@ public class BandpassFilterBlock implements Serializable {
                 // reset the memory of the filter
                 filter.reset();
             }
+            eegObjectOut.writeObject(pcg);
+            eegObjectOut.flush();
         }
+
+        eegObjectOut.writeObject(null);
+        eegObjectOut.flush();
+
+        eegObjectIn.close();
+        eegObjectOut.close();
+        eegPipeIn.close();
+        eegPipeOut.close();
     }
 }

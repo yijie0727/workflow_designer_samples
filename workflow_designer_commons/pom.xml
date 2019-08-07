@@ -59,7 +59,7 @@
       <dependency>
           <groupId>cz.zcu.kiv.eeg.basil</groupId>
           <artifactId>basil_bci</artifactId>
-          <version>1.2.0</version>
+          <version>1.3.1</version>
           <scope>compile</scope>
       </dependency>
       <dependency>

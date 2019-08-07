@@ -29,9 +29,15 @@ public abstract class DeepLearning4jClassifier implements IClassifier,Serializab
     @Override
     public ClassificationStatistics test(List<FeatureVector> featureVectors, List<Double> targets) {
         ClassificationStatistics resultsStats = new ClassificationStatistics(); // initialization of classifier statistics
+        String marker = null;
+        FeatureVector vector = null;
         for (int i = 0; i < featureVectors.size(); i++) {   //iterating epochs
-            double output = this.classify(featureVectors.get(i));   //   output means score of a classifier from method classify
-            resultsStats.add(output, targets.get(i));   // calculating statistics
+            vector = featureVectors.get(i);
+            double output = this.classify(vector);   //   output means score of a classifier from method classify
+            if(vector.getMarkers() != null && vector.getMarkers().size() > 0){
+                marker = vector.getMarkers().get(0).getName();
+            }
+            resultsStats.add(output, targets.get(i), marker);   // calculating statistics
         }
         return resultsStats;    //  returns classifier statistics
     }

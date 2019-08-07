@@ -14,10 +14,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
+
 @BlockType(type="EEGPlot",family="Visualization", runAsJar = true)
 public class EEGPlotBlock implements Serializable {
 
-    @BlockInput(name = "EEGData", type = "EEGDataPipeStream")
+    @BlockInput(name = "EEGData", type = STREAM)
     private PipedInputStream eegPipeIn  = new PipedInputStream();
 
     private EEGDataPackageList eegDataList;

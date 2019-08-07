@@ -18,6 +18,8 @@ import java.io.Serializable;
 import java.nio.ByteOrder;
 import java.util.*;
 
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
+
 @BlockType(type="OffLineDataProvider", family = "DataProvider", runAsJar = true)
 public class OffLineDataProviderBlock implements Serializable {
     private static final String VHDR_EXTENSION = ".vhdr";
@@ -26,7 +28,7 @@ public class OffLineDataProviderBlock implements Serializable {
     @BlockProperty(name = "EEG File", type = Type.FILE_ARRAY)
     private List<File> eegFileInputs;
 
-    @BlockOutput(name = "EEGData", type = "EEGDataPipeStream")
+    @BlockOutput(name = "EEGData", type = STREAM)
     private PipedOutputStream eegPipeOut = new PipedOutputStream();
 
     private EEGDataPackageList eegDataPackageList;

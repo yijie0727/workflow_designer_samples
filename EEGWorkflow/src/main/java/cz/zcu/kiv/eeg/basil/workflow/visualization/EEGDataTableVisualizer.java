@@ -12,10 +12,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
+
 @BlockType(type="EEGDataTable",family = "Visualization", runAsJar = true)
 public class EEGDataTableVisualizer implements Serializable {
 
-    @BlockInput (name = "EEGData", type = "EEGDataPipeStream")
+    @BlockInput (name = "EEGData", type = STREAM)
     private PipedInputStream eegPipeIn = new PipedInputStream();
 
     @BlockExecute

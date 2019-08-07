@@ -16,6 +16,8 @@ import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
 import cz.zcu.kiv.eeg.basil.workflow.io.xdf.XdfFileData;
 import cz.zcu.kiv.eeg.basil.workflow.io.xdf.XdfReader;
 
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
+
 /**
  * Provider of the XDF file data.
  * Reads the XDF data structure and
@@ -40,7 +42,7 @@ public class XdfDataProviderBlock {
 	@BlockProperty(name="Marker Stream Name",type = Type.STRING)
 	private String markerStreamName;
 
-	@BlockOutput(name = "EEGData", type = "EEGDataPipeStream")
+	@BlockOutput(name = "EEGData", type = STREAM)
 	private PipedOutputStream eegPipeOut = new PipedOutputStream();
 
 	private EEGDataPackageList eegDataPackageList;

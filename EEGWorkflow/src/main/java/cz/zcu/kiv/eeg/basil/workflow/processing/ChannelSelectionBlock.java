@@ -8,6 +8,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
 import static cz.zcu.kiv.WorkflowDesigner.Type.STRING_ARRAY;
 
 @BlockType(type="ChannelSelection",family = "Preprocessing", runAsJar = true)
@@ -18,10 +20,10 @@ public class ChannelSelectionBlock implements Serializable {
 
     private EEGDataPackageList eegDataPackageList;
 
-    @BlockInput (name = "EEGData", type = "EEGDataPipeStream")
+    @BlockInput (name = "EEGData", type = STREAM)
     private PipedInputStream  eegPipeIn  = new PipedInputStream();
 
-    @BlockOutput(name = "EEGData", type = "EEGDataPipeStream")
+    @BlockOutput(name = "EEGData", type = STREAM)
     private PipedOutputStream eegPipeOut = new PipedOutputStream();
 
 

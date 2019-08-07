@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
+
 /**
  * Average a list of epochs using one stimuli marker
  * @author lvareka
@@ -24,10 +26,10 @@ public class AveragingBlock implements Serializable {
 	@BlockInput(name = "Markers",type="EEGMarker[]")
 	private List<EEGMarker> markers;
 
-	@BlockInput(name = "EEGData",  type = "EEGDataPipeStream")
+	@BlockInput(name = "EEGData",  type = STREAM)
 	private PipedInputStream eegPipeIn  = new PipedInputStream();
 
-	@BlockOutput(name = "EEGData", type = "EEGDataPipeStream")
+	@BlockOutput(name = "EEGData", type = STREAM)
 	private PipedOutputStream eegPipeOut = new PipedOutputStream();
 
 

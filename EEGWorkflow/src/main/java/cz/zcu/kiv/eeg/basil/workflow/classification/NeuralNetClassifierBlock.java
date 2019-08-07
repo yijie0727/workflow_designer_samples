@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
+
 /**
  * Average a list of trainingEEGData using one stimuli marker
  * @author lvareka
@@ -28,10 +30,10 @@ public class NeuralNetClassifierBlock implements Serializable {
 	@BlockInput(name = "Markers",type="EEGMarker[]")
 	private List<EEGMarker> markers;
 
-	@BlockInput (name = "TrainingFeatureVectors", type = "FeatureVectorPipeStream")
+	@BlockInput (name = "TrainingFeatureVectors", type = STREAM)
     private PipedInputStream trainingPipeIn = new PipedInputStream();
 
-    @BlockInput(name = "TestingFeatureVectors", type = "FeatureVectorPipeStream")
+    @BlockInput(name = "TestingFeatureVectors", type = STREAM)
     private PipedInputStream testingPipeIn  = new PipedInputStream();
 
     private List<FeatureVector> trainingEEGData;

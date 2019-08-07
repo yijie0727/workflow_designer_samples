@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static cz.zcu.kiv.WorkflowDesigner.Type.NUMBER;
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
 
 @BlockType(type="EpochExtraction",family = "Preprocessing", runAsJar = true)
 public class EpochExtractionBlock implements Serializable {
@@ -22,10 +23,10 @@ public class EpochExtractionBlock implements Serializable {
     @BlockProperty(name="PostStimulus onset",type=NUMBER, defaultValue = "0")
     private int postStimulus; /* time after the stimulus onset in ms */
 
-    @BlockInput(name = "EEGData",  type = "EEGDataPipeStream")
+    @BlockInput(name = "EEGData",  type = STREAM)
     private PipedInputStream eegPipeIn  = new PipedInputStream();
 
-    @BlockOutput(name = "EEGData", type = "EEGDataPipeStream")
+    @BlockOutput(name = "EEGData", type = STREAM)
     private PipedOutputStream eegPipeOut = new PipedOutputStream();
 
     private EEGDataPackageList eegDataPackageList;

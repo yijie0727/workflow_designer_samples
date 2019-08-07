@@ -12,6 +12,8 @@ import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockType;
 import cz.zcu.kiv.eeg.basil.data.EEGMarker;
 import cz.zcu.kiv.eeg.basil.data.FeatureVector;
 
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
+
 /**
  * 
  * Labels feature vectors under assumption that the markers 
@@ -28,10 +30,10 @@ public class FeatureLabeling {
 	@BlockInput(name = "Markers",type="EEGMarker[]")
 	private List<EEGMarker> targetMarkers; 
 
-	@BlockInput (name = "FeatureVectors", type = "FeatureVectorPipeStream")
+	@BlockInput (name = "FeatureVectors", type = STREAM)
 	private PipedInputStream featureVecPipeIn = new PipedInputStream();
 
-	@BlockOutput(name = "FeatureVectors", type = "FeatureVectorPipeStream")
+	@BlockOutput(name = "FeatureVectors", type = STREAM)
 	private PipedOutputStream featureVecPipeOut = new PipedOutputStream();
 
 	@BlockExecute

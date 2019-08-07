@@ -8,6 +8,7 @@ import cz.zcu.kiv.eeg.basil.math.IirBandpassFilter;
 import java.io.*;
 
 import static cz.zcu.kiv.WorkflowDesigner.Type.NUMBER;
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
 
 /**
  * Bandpass filter block
@@ -24,10 +25,10 @@ public class BandpassFilterBlock implements Serializable {
 
     private IirBandpassFilter filter;
 
-    @BlockInput (name = "EEGData", type = "EEGDataPipeStream")
+    @BlockInput (name = "EEGData", type = STREAM)
     private PipedInputStream  eegPipeIn = new PipedInputStream();
 
-    @BlockOutput(name = "EEGData", type = "EEGDataPipeStream")
+    @BlockOutput(name = "EEGData", type = STREAM)
     private PipedOutputStream eegPipeOut = new PipedOutputStream();
 
 

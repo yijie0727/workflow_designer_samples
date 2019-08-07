@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
+
 /**
  * 
  * Features extraction based on discrete wavelet transformation using eegdsp
@@ -53,10 +55,10 @@ import java.util.List;
 
 	private ISignalProcessor dwt;
 
-	@BlockInput (name = "EEGData", type = "EEGDataPipeStream")
+	@BlockInput (name = "EEGData", type = STREAM)
 	private PipedInputStream eegPipeIn = new PipedInputStream();
 
-	@BlockOutput(name = "FeatureVectors", type = "FeatureVectorPipeStream")
+	@BlockOutput(name = "FeatureVectors", type = STREAM)
 	private PipedOutputStream featureVecPipeOut = new PipedOutputStream();
 
 	/**

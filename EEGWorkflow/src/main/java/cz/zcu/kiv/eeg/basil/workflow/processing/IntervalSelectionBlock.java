@@ -7,6 +7,7 @@ import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
 import java.io.*;
 
 import static cz.zcu.kiv.WorkflowDesigner.Type.NUMBER;
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
 
 /**
  * Selects specified data interval from given set of EEG data
@@ -21,10 +22,10 @@ public class IntervalSelectionBlock implements Serializable {
     @BlockProperty(name="Samples",type=NUMBER, defaultValue = "512")
     private int samples;
 
-    @BlockInput (name = "EEGData", type = "EEGDataPipeStream")
+    @BlockInput (name = "EEGData", type = STREAM)
     private PipedInputStream eegPipeIn = new PipedInputStream();
 
-    @BlockOutput(name = "EEGData", type = "EEGDataPipeStream")
+    @BlockOutput(name = "EEGData", type = STREAM)
     private PipedOutputStream eegPipeOut = new PipedOutputStream();
 
 

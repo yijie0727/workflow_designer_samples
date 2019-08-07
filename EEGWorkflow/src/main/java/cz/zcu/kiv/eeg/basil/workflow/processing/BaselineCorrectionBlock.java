@@ -9,6 +9,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 import static cz.zcu.kiv.WorkflowDesigner.Type.NUMBER;
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
 
 /**
  * 
@@ -27,10 +28,10 @@ public class BaselineCorrectionBlock implements Serializable {
     @BlockProperty(name="EndTime",type = NUMBER, defaultValue = "")
 	private double endTime;   /* in milliseconds */
 
-	@BlockInput(name = "EEGData", type = "EEGDataPipeStream")
+	@BlockInput(name = "EEGData", type = STREAM)
 	private PipedInputStream eegPipeIn  = new PipedInputStream();
 
-	@BlockOutput(name = "EEGData", type = "EEGDataPipeStream")
+	@BlockOutput(name = "EEGData", type = STREAM)
 	private PipedOutputStream eegPipeOut = new PipedOutputStream();
 
 	private EEGDataPackageList eegDataPackageList=null;

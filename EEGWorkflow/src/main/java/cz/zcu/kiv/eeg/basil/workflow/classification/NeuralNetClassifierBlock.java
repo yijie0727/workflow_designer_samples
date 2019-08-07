@@ -107,6 +107,7 @@ public class NeuralNetClassifierBlock implements Serializable {
         		expectedLabels.add(featureVector.getExpectedOutput());
         	}
             statistics = classification.test(testingEEGData, expectedLabels);
+        	System.out.println(statistics.toString());
             return statistics.toString();
 
         }

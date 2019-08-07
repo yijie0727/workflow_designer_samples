@@ -11,3 +11,4 @@ out/
 Epochs.csv.orig
 /src/test/resources/data/P300/chart.png
 test_result
+/basil_bci.iml

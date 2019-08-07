@@ -6,6 +6,7 @@ import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockOutput;
 import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockType;
 import cz.zcu.kiv.WorkflowDesigner.Visualizations.Table;
 import cz.zcu.kiv.eeg.basil.data.ClassificationStatistics;
+import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
 import cz.zcu.kiv.eeg.basil.data.EEGMarker;
 import cz.zcu.kiv.eeg.basil.data.FeatureVector;
 
@@ -40,6 +41,9 @@ public class NeuralNetClassifierBlock implements Serializable {
     @BlockInput(name="Layers", type="NeuralNetworkLayerChain")
     private NeuralNetworkLayerChain layerChain;
 
+    @BlockOutput(name="ClassificationResult", type ="ClassificationStatistics")
+    private ClassificationStatistics statistics;
+
 	public NeuralNetClassifierBlock(){
 		//Required Empty Default Constructor for Workflow Designer
 	}
@@ -59,14 +63,14 @@ public class NeuralNetClassifierBlock implements Serializable {
         while(testF && trainF) {
             if((test  = (FeatureVector) testObjectIn.readObject())!= null){
                 testingEEGData.add( test );
-                System.out.println("1 in test");
+                System.out.println("receive testVector");
             } else {
                 testF = false;
             }
 
             if((train  = (FeatureVector) trainObjectIn.readObject())!= null){
                 trainingEEGData.add( train );
-                System.out.println("1 in train");
+                System.out.println("receive trainVector");
             } else {
                 trainF = false;
             }
@@ -75,13 +79,13 @@ public class NeuralNetClassifierBlock implements Serializable {
         if( testF && !trainF ) {
             while ((test  = (FeatureVector) testObjectIn.readObject())!= null) {
                 testingEEGData.add(test);
-                System.out.println("2 in test");
+                System.out.println("receive testVector");
             }
         }
         else if ( !testF && trainF ) {
             while((train  = (FeatureVector) trainObjectIn.readObject())!= null){
                 trainingEEGData.add( train );
-                System.out.println("2 in train");
+                System.out.println("receive trainVector");
             }
         }
 
@@ -100,8 +104,7 @@ public class NeuralNetClassifierBlock implements Serializable {
         	for (FeatureVector featureVector: testingEEGData) {
         		expectedLabels.add(featureVector.getExpectedOutput());
         	}
-            ClassificationStatistics statistics = classification.test(testingEEGData, expectedLabels);
-System.out.println(statistics.toString());
+            statistics = classification.test(testingEEGData, expectedLabels);
             return statistics.toString();
 
         }
@@ -133,7 +136,7 @@ System.out.println(statistics.toString());
         this.markers = markers;
     }
 
-
-
-
+    public void setTrainingEEGData(List<FeatureVector> trainingEEGData) {
+        this.trainingEEGData = trainingEEGData;
+    }
 }

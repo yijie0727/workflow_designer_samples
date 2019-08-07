@@ -11,6 +11,10 @@ import cz.zcu.kiv.signal.DataTransformer;
 import cz.zcu.kiv.signal.EEGDataTransformer;
 
 import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Serializable;
 import java.nio.ByteOrder;
 import java.util.*;
 
@@ -37,6 +41,12 @@ public class OffLineDataProviderBlock implements Serializable {
         for(File eegFileInput: eegFileInputs){
             File vhdrFile = new File(eegFileInput.getParentFile().getAbsolutePath()+File.separator+eegFileInput.getName().split("\\.")[0]+VHDR_EXTENSION);
             File vmrkFile = new File(eegFileInput.getParentFile().getAbsolutePath()+File.separator+eegFileInput.getName().split("\\.")[0]+VMRK_EXTENSION);
+
+            if(!vhdrFile.exists())
+                throw new FileNotFoundException(vhdrFile.getAbsolutePath());
+
+            if(!vmrkFile.exists())
+                throw new FileNotFoundException(vmrkFile.getAbsolutePath());
 
             DataTransformer dt = new EEGDataTransformer();
 

@@ -7,6 +7,8 @@ import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockType;
 
 import java.io.ObjectOutputStream;
 import java.io.PipedOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
 import static cz.zcu.kiv.WorkflowDesigner.Type.STRING;
@@ -24,9 +26,17 @@ public class MixedPets {
     PipedOutputStream pipedOut = new PipedOutputStream();
 
 
+    @BlockOutput(name = "maxPetsType", type = STRING)
+    String maxPetType;
+
 
     @BlockExecute
     public void process() throws Exception {
+
+
+        int max = Integer.MIN_VALUE;
+
+        Map<String, Integer> pets = new HashMap<>();
 
         petsName = petsName.replaceAll("\\s*", "");
         petsType = petsType.replaceAll("\\s*", "");
@@ -41,6 +51,20 @@ public class MixedPets {
         ObjectOutputStream objectOut = new ObjectOutputStream( pipedOut );
 
         for(int i = 0; i < names.length; i++){
+
+            if(pets.containsKey(types[i]))
+                pets.put(types[i], pets.get(types[i])+1);
+
+            else
+                pets.put(types[i],1);
+
+
+            if(max < pets.get(types[i])){
+                max = pets.get(types[i]);
+                maxPetType = types[i];
+                System.out.println("maxPetType = types[i] = "+ maxPetType);
+            }
+
             Pet pet = new Pet(names[i], types[i]);
             objectOut.writeObject(pet);
             objectOut.flush();

@@ -14,53 +14,35 @@ import static cz.zcu.kiv.WorkflowDesigner.Type.STRING;
 @BlockType(type="StoreDataToFile", family = "File" )
 public class StoreDataToFileBlock {
 
-
-
     @BlockProperty(name = "FileName", type = STRING)
     private String fileName;
 
-
     @BlockInput(name = "PipeIn",  type = STREAM)
     private PipedInputStream pipeIn = new PipedInputStream();
-
 
     @BlockExecute()
     public File process() throws Exception {
         int random = (int)(Math.random()*100000);
         File file = new File(random+"_"+fileName);
 
-//        FileOutputStream fileOut = new FileOutputStream(file, true);
+        FileOutputStream fileOut = new FileOutputStream(file);
+
 //        int b;
 //        while((b = pipeIn.read())!= 0) {
-//
 //            fileOut.write(b);
-//
+//            fileOut.flush();
 //        }
-//
-//
-//        fileOut.close();
-//        pipeIn.close();
-//
-//        return file;
+        byte[] bytes= new byte[1];
+        while(pipeIn.read(bytes)!=-1){
 
-
-        //Or
-        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-        int b;
-        while((b = pipeIn.read())!= 0) {
-
-            byteOut.write(b);
-
+            fileOut.write(bytes);
+            fileOut.flush();
         }
 
-
-        FileUtils.writeByteArrayToFile(file, byteOut.toByteArray());
-
-
-        byteOut.close();
+        fileOut.close();
         pipeIn.close();
-        return file;
 
+        return file;
     }
 
 

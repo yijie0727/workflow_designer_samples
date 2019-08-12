@@ -12,13 +12,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LSLTest {
+public class LSLTest2 {
 
     public static void main(String[] args) throws Exception {
 
-        System.out.println("Test LSLOutputBlock: ");
+        System.out.println("Test LSLDataProviderBlock: ");
 
-        String json = FileUtils.readFileToString(new File("src/test/resources/LSLIOTest.json"), Charset.defaultCharset());
+        String json = FileUtils.readFileToString(new File("src/test/resources/LSLIOTest2.json"), Charset.defaultCharset());
 
         JSONObject jsonObject = new JSONObject(json);
         File outputFile = File.createTempFile("lslEEGTest__", ".json");
@@ -34,10 +34,9 @@ public class LSLTest {
         PackageClass.assignModuleSource(moduleSource, blockTypes);
 
 
-        JSONArray jsonArray = new BlockWorkFlow(ClassLoader.getSystemClassLoader(), moduleSource, null, "src/test/resources/data", 8)
+        JSONArray jsonArray = new BlockWorkFlow(ClassLoader.getSystemClassLoader(), moduleSource, null, "src/test/resources/data", 9)
                 .execute(jsonObject, "test_result", outputFile.getAbsolutePath());
 
 
     }
-
 }

@@ -14,6 +14,8 @@ import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
 import cz.zcu.kiv.eeg.basil.data.EEGMarker;
 import edu.ucsd.sccn.LSL;
 
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
+
 /**
  * Provides the data as an
  * LabStreamingLayer (LSL) output
@@ -28,9 +30,10 @@ public class LSLOutputBlock {
 	 * Input data to be streamed
 	 */
 
-	@BlockInput(name = "EEGData", type = "EEGDataPipeStream")
+	@BlockInput(name = "EEGData", type = STREAM)
 	private PipedInputStream eegPipeIn = new PipedInputStream();
 
+	// @BlockInput(name = "EEGData", type = "EEGDataList")
 	private EEGDataPackageList eegDataPackageList;
 
 	@BlockExecute
@@ -59,8 +62,9 @@ public class LSLOutputBlock {
 		LSLEEGOutput eegOutput = new LSLEEGOutput(outletEEG);
 
 		setData(eegDataObj, markerOutput, eegOutput);
+		System.out.println("In LSLOutputBlock: PipedIn receives data: " + eegDataObj.toString());
 
-		// send data
+		// set data
 		while ((eegDataObj = (EEGDataPackage) eegObjectIn.readObject())!= null) {
 			setData(eegDataObj, markerOutput, eegOutput);
 		}
@@ -73,6 +77,9 @@ public class LSLOutputBlock {
 	private void setData(EEGDataPackage eegDataPackage, LSLMarkerOutput markerOutput, LSLEEGOutput eegOutput) throws InterruptedException {
 		double[][] data 		= eegDataPackage.getData();
 		List<EEGMarker> markers = eegDataPackage.getMarkers();
+		for(EEGMarker eegMaker: markers){
+			System.out.println(eegMaker.toString());
+		}
 
 		markerOutput.setData(markers);
 		markerOutput.start();

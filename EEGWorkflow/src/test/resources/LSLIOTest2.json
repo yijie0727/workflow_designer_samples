@@ -1,36 +1,38 @@
 {
   "edges": [
     {
-      "id": 5,
+      "id": 3,
       "block1": 1,
       "connector1": [
-        "PipeOut",
+        "EEGData",
         "output"
       ],
       "block2": 2,
       "connector2": [
-        "EEGData",
+        "PipeIn",
         "input"
       ]
     }
   ],
   "blocks": [
     {
-      "id": 2,
-      "x": -88.76397315164462,
-      "y": -302.8529735414461,
-      "type": "LSLOutput",
-      "module": "basil_bci-1.3.1-jar-with-dependencies.jar:cz.zcu.kiv",
-      "values": {}
-    },
-    {
       "id": 1,
-      "x": -309.8012077486776,
-      "y": -318.552289996356,
-      "type": "FileToStoredData",
+      "x": -308.3590144739571,
+      "y": -189.18355205384333,
+      "type": "LSLDataProvider",
       "module": "basil_bci-1.3.1-jar-with-dependencies.jar:cz.zcu.kiv",
       "values": {
-        "StoredFile": "eegData.tmp"
+        "Buffer size": "350"
+      }
+    },
+    {
+      "id": 2,
+      "x": -84.08219948421362,
+      "y": -189.01509991371202,
+      "type": "StoreDataToFile",
+      "module": "basil_bci-1.3.1-jar-with-dependencies.jar:cz.zcu.kiv",
+      "values": {
+        "FileName": "lslDataProvider.tmp"
       }
     }
   ]

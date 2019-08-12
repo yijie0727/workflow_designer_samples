@@ -19,7 +19,7 @@ import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
 import cz.zcu.kiv.eeg.basil.data.EEGMarker;
 import java.util.Arrays;
 
-
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
 
 
 /**
@@ -40,9 +40,9 @@ public class LSLDataProviderBlock implements Serializable  {
 	private int buffer_size = 5000; /* size of a single data block before  transferring to observers */
 
 //	@BlockOutput(name = "EEGData", type = "EEGDataList")
-//	private EEGDataPackageList eegDataPackageList;
+	private EEGDataPackageList eegDataPackageList;
 
-	@BlockOutput(name = "EEGData", type = "EEGDataPipeStream")
+	@BlockOutput(name = "EEGData", type = STREAM)
 	private PipedOutputStream eegPipeOut = new PipedOutputStream();
 
 	ObjectOutputStream eegObjectOut;
@@ -77,20 +77,24 @@ public class LSLDataProviderBlock implements Serializable  {
 		
 		this.eegCollector.join();
 		this.markerCollector.join();
-		//eegDataPackageList = new EEGDataPackageList(eegDataList);
-
 
 		eegObjectOut.writeObject(null);
 		eegObjectOut.flush();
 
+		eegDataPackageList = new EEGDataPackageList(eegDataList);
 		eegObjectOut.close();
 		eegPipeOut.close();
+
+		System.out.println("LSLDataProvidedBlock ends.");
 	}
 
 		
 	public void stop() {
 		this.eegCollector.terminate();
+		System.out.println("End eegCollector");
+
 		this.markerCollector.terminate();
+		System.out.println("End markerCollector");
 	}
 
     /**
@@ -114,7 +118,7 @@ public class LSLDataProviderBlock implements Serializable  {
 		/* if maximum size is reached, transfer the data */
 		if (dataPointer == buffer_size) {
 			EEGDataPackage dataPackage = new EEGDataPackage(data, markers, null, configuration);
-			//this.eegDataList.add(dataPackage);
+			this.eegDataList.add(dataPackage);
 
 
 			eegObjectOut.writeObject(dataPackage);
@@ -134,12 +138,15 @@ public class LSLDataProviderBlock implements Serializable  {
 	public synchronized void addMarker(String[] marker) {
 		EEGMarker newMarker = new EEGMarker(marker[0], dataPointer);
 		this.markers.add(newMarker);
+
+		System.out.println("In addMarker:  new EEGMarker is: "+ newMarker.toString());
+		System.out.println(" ");
 	}
 
 
-//	public EEGDataPackageList getEegDataPackageList() {
-//		return eegDataPackageList;
-//	}
+	public EEGDataPackageList getEegDataPackageList() {
+		return eegDataPackageList;
+	}
 
 
 	

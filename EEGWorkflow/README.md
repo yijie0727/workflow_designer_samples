@@ -1,6 +1,7 @@
 # Introduction
-The project aims at providing Java-based portable software solution for the 2016 - 2019 Czech-Bavarian BCI project. It provides basic 
-functionality to support:
+The project aims at providing Java-based portable software solution for the 2016 - 2019 Czech-Bavarian BCI project.  
+Current version is 1.3.1, which is modified to deal with the EEGDataPackage as ObjectStream, sent and received by 
+PipedOutputStream and PipedInputStream. It provides basic functionality to support:
 
 - data acquisition (either off-line - from BrainVision files, or on-line - using Lab Streaming Layer API, or BrainVision
 RDA API),

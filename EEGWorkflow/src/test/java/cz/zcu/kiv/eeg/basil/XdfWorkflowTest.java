@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import cz.zcu.kiv.WorkflowDesigner.BlockWorkFlow;
+import cz.zcu.kiv.WorkflowDesigner.WrongTypeException;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,7 +22,7 @@ import cz.zcu.kiv.WorkflowDesigner.FieldMismatchException;
 public class XdfWorkflowTest {
 
 	@Test
-	public void testJSONLSL() throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, FieldMismatchException, InterruptedException, ExecutionException {
+	public void testJSONLSL() throws  Exception  {
 		String json = FileUtils.readFileToString(new File("src/test/resources/XDFFile.json"),Charset.defaultCharset());
 		JSONObject jsonObject = new JSONObject(json);
 		File outputFile = File.createTempFile("JSONLSL",".json");
@@ -37,7 +38,8 @@ public class XdfWorkflowTest {
 		PackageClass.assignModuleSource(moduleSource,blockTypes);
 
 
-		JSONArray jsonArray = new BlockWorkFlow(ClassLoader.getSystemClassLoader(), moduleSource, null, "",4).execute(jsonObject,"test_data",outputFile.getAbsolutePath());
+		JSONArray jsonArray = new BlockWorkFlow(ClassLoader.getSystemClassLoader(), moduleSource, null, "",5)
+				.execute(jsonObject,"test_result",outputFile.getAbsolutePath());
 		for (Object o: jsonArray) {
 			System.out.println(o);
 		}

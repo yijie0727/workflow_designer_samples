@@ -14,9 +14,13 @@ import weka.core.Instances;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.NumericToNominal;
 
+import java.io.ObjectInputStream;
+import java.io.PipedInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
 
 /**
  * Created by Tomas Prokop on 20.05.2019.
@@ -27,10 +31,14 @@ public class SVMBlock implements Serializable {
     @BlockInput(name = "Markers",type="EEGMarker[]")
     private List<EEGMarker> markers;
 
-    @BlockInput(name = "TrainingFeatureVectors", type = "List<FeatureVector>")
+    @BlockInput(name = "TrainingFeatureVectors", type = STREAM)
+    private PipedInputStream trainingPipeIn = new PipedInputStream();
+
+    @BlockInput(name = "TestingFeatureVectors",  type = STREAM)
+    private PipedInputStream testingPipeIn  = new PipedInputStream();
+
     private List<FeatureVector> trainingEEGData;
 
-    @BlockInput(name = "TestingFeatureVectors", type = "List<FeatureVector>")
     private List<FeatureVector> testingEEGData;
 
     private LibSVM classifier;
@@ -41,7 +49,54 @@ public class SVMBlock implements Serializable {
     private Instances instances;
 
     @BlockExecute
-    public Object process(){
+    public Object process() throws Exception {
+
+        trainingEEGData = new ArrayList<>();
+        testingEEGData  = new ArrayList<>();
+        ObjectInputStream trainObjectIn  = new ObjectInputStream(trainingPipeIn);
+        ObjectInputStream  testObjectIn  = new ObjectInputStream(testingPipeIn);
+
+        System.out.println("SVM before");
+        FeatureVector test = null, train = null;
+        boolean testF = true, trainF = true;
+
+        while(testF && trainF) {
+            if((test  = (FeatureVector) testObjectIn.readObject())!= null){
+                testingEEGData.add( test );
+                System.out.println("SVM receives testVector");
+            } else {
+                testF = false;
+            }
+
+            if((train  = (FeatureVector) trainObjectIn.readObject())!= null){
+                trainingEEGData.add( train );
+                System.out.println("SVM receives trainVector");
+            } else {
+                trainF = false;
+            }
+        }
+
+        if( testF && !trainF ) {
+            while ((test  = (FeatureVector) testObjectIn.readObject())!= null) {
+                testingEEGData.add(test);
+                System.out.println("SVM receives testVector");
+            }
+        }
+        else if ( !testF && trainF ) {
+            while((train  = (FeatureVector) trainObjectIn.readObject())!= null){
+                trainingEEGData.add( train );
+                System.out.println("SVM receives trainVector");
+            }
+        }
+
+        System.out.println("SVM after");
+
+        trainObjectIn.close();
+        testObjectIn.close();
+        testingPipeIn.close();
+        trainingPipeIn.close();
+
+
         classifier = createClassifier();
 
         if(trainingEEGData != null){

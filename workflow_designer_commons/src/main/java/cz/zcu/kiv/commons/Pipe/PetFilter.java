@@ -11,8 +11,13 @@ import static cz.zcu.kiv.WorkflowDesigner.Type.STRING;
 public class PetFilter {
 
 
-    @BlockProperty(name = "targetPetType", type = STRING, description = "Enter the pet type you want to get(example: cat)")
+//    @BlockProperty(name = "targetPetType", type = STRING, description = "Enter the pet type you want to get(example: cat)")
+//    String maxPetType;
+
+
+    @BlockInput(name = "targetPetType", type = STRING)
     String petType;
+
 
     @BlockInput(name = "pets1", type = STREAM)
     PipedInputStream pipedIn1   = new PipedInputStream();
@@ -27,6 +32,7 @@ public class PetFilter {
 
     @BlockExecute
     public void process() throws Exception {
+ System.out.println(" String maxPetType = "+ petType );
 
         ObjectInputStream objectInStream1 = new ObjectInputStream(pipedIn1);
         ObjectInputStream objectInStream2 = new ObjectInputStream(pipedIn2);

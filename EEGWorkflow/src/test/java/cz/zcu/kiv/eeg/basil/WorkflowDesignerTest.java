@@ -40,10 +40,10 @@ import java.nio.charset.Charset;
  **********************************************************************************************************************/
 public class WorkflowDesignerTest {
 
-    //@Test
+    @Test
     public void testBlock() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         JSONArray blocksArray=new BlockWorkFlow(ClassLoader.getSystemClassLoader(),":cz.zcu.kiv.eeg.basil",null,"").initializeBlocks();
-        assert blocksArray.length() == 17;
+        assert blocksArray.length() == 21;
     }
 
 

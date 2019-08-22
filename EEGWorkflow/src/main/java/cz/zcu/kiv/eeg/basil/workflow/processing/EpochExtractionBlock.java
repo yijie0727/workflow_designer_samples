@@ -6,12 +6,13 @@ import cz.zcu.kiv.eeg.basil.data.EEGDataPackage;
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
 import cz.zcu.kiv.eeg.basil.data.EEGMarker;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static cz.zcu.kiv.WorkflowDesigner.Type.NUMBER;
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
 
 @BlockType(type="EpochExtraction",family = "Preprocessing", runAsJar = true)
 public class EpochExtractionBlock implements Serializable {
@@ -22,18 +23,29 @@ public class EpochExtractionBlock implements Serializable {
     @BlockProperty(name="PostStimulus onset",type=NUMBER, defaultValue = "0")
     private int postStimulus; /* time after the stimulus onset in ms */
 
-    @BlockInput(name = "EEGData", type = "EEGDataList")
+    @BlockInput(name = "EEGData",  type = STREAM)
+    private PipedInputStream eegPipeIn  = new PipedInputStream();
+
+    @BlockOutput(name = "EEGData", type = STREAM)
+    private PipedOutputStream eegPipeOut = new PipedOutputStream();
+
     private EEGDataPackageList eegDataPackageList;
 
-    @BlockOutput(name = "EEGData", type = "EEGDataList")
     private EEGDataPackageList epochs;
 
 
     @BlockExecute
-    public void process(){
+    public void process() throws Exception{
 
+        ObjectInputStream  eegObjectIn  = new ObjectInputStream(eegPipeIn);
+        ObjectOutputStream eegObjectOut = new ObjectOutputStream(eegPipeOut);
+
+        ArrayList<EEGDataPackage> list = new ArrayList<>();
         ArrayList<EEGDataPackage> epochsList = new ArrayList<>();
-        for(EEGDataPackage eegData:eegDataPackageList.getEegDataPackage()){
+
+        EEGDataPackage eegData;
+        while ((eegData = (EEGDataPackage) eegObjectIn.readObject())!= null) {
+            list.add(eegData);
 
             List<EEGMarker> markers = eegData.getMarkers();
             double[][]        data  = eegData.getData();
@@ -56,10 +68,23 @@ public class EpochExtractionBlock implements Serializable {
                 Configuration cfg = eegData.getConfiguration();
                 cfg.setPostStimulus(postStimulus);
                 cfg.setPreStimulus(preStimulus);
-                epochsList.add(new EEGDataPackage(epochData, Arrays.asList(currentMarker), eegData.getChannelNames(), cfg));
+
+                EEGDataPackage newData = new EEGDataPackage(epochData, Arrays.asList(currentMarker), eegData.getChannelNames(), cfg);
+                epochsList.add(newData);
+                eegObjectOut.writeObject(newData);
+                eegObjectOut.flush();
             }
         }
+        eegDataPackageList = new EEGDataPackageList(list);
         epochs=new EEGDataPackageList(epochsList);
+
+        eegObjectOut.writeObject(null);
+        eegObjectOut.flush();
+
+        eegObjectOut.close();
+        eegObjectIn.close();
+        eegPipeOut.close();
+        eegPipeIn.close();
     }
 
     public int getPreStimulus() {

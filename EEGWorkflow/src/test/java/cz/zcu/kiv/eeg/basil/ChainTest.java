@@ -1,22 +1,20 @@
 package cz.zcu.kiv.eeg.basil;
+import cz.zcu.kiv.WorkflowDesigner.Annotations.BlockType;
+import cz.zcu.kiv.WorkflowDesigner.BlockWorkFlow;
 import cz.zcu.kiv.WorkflowDesigner.FieldMismatchException;
-import cz.zcu.kiv.WorkflowDesigner.Visualizations.Table;
-import cz.zcu.kiv.WorkflowDesigner.Workflow;
-import cz.zcu.kiv.eeg.basil.data.EEGMarker;
-import cz.zcu.kiv.eeg.basil.workflow.io.OffLineDataProviderBlock;
-import cz.zcu.kiv.eeg.basil.workflow.processing.AveragingBlock;
-import cz.zcu.kiv.eeg.basil.workflow.processing.BaselineCorrectionBlock;
-import cz.zcu.kiv.eeg.basil.workflow.processing.ChannelSelectionBlock;
-import cz.zcu.kiv.eeg.basil.workflow.processing.EpochExtractionBlock;
-import cz.zcu.kiv.eeg.basil.workflow.visualization.EEGDataTableVisualizer;
+import cz.zcu.kiv.WorkflowDesigner.WrongTypeException;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
+
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
+import java.nio.charset.Charset;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 
 /***********************************************************************************************************************
@@ -25,7 +23,7 @@ import java.util.Arrays;
 
  * ==========================================
  *
- * Copyright (C) 2018 by University of West Bohemia (http://www.zcu.cz/en/)
+ * Copyright (C) 2019 by University of West Bohemia (http://www.zcu.cz/en/)
  *
  ***********************************************************************************************************************
  *
@@ -40,26 +38,55 @@ import java.util.Arrays;
  *
  ***********************************************************************************************************************
  *
- * WorkflowDesignerTest, 2018/17/05 6:32 Joey Pinto
- *
+ * WorkflowDesignerTest, 2018/17/05 6:32 Joey Pinto, 2019 GSoC P2 Yijie Huang
  * This test verifies the creation of all available blocks in the designer
  * The test.jar used for testing is the packaged version of the current project with its dependencies.
  **********************************************************************************************************************/
 public class ChainTest {
 
-    
+
 
     @Test
-    public void testChainWorkflow() throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, FieldMismatchException {
+    public void testChainWorkflow() throws WrongTypeException, IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, FieldMismatchException, InterruptedException, ExecutionException {
         String json=FileUtils.readFileToString(new File("src/test/resources/chain.json"));
         JSONObject jsonObject = new JSONObject(json);
 
-        JSONArray jsonArray = new Workflow(ClassLoader.getSystemClassLoader(), ":cz.zcu.kiv.eeg.basil",null,"src/test/resources/data").execute(jsonObject,"test_result",null);
+        JSONArray blocksArray = jsonObject.getJSONArray("blocks");
+        List<String> blockTypes = new ArrayList<>();
+        for(int i = 0; i<blocksArray.length(); i++){
+            JSONObject blockObject = blocksArray.getJSONObject(i);
+            blockTypes.add(blockObject.getString("type"));
+        }
+
+        Map<Class, String> moduleSource = new HashMap<>();
+        PackageClass.assignModuleSource(moduleSource,blockTypes);
+        JSONArray jsonArray = new BlockWorkFlow(ClassLoader.getSystemClassLoader(), moduleSource,null,"src/test/resources/data",1)
+                .execute(jsonObject,"test_result",null);
         assert jsonArray !=null;
     }
-  
+
+    @Test
+    public void testEEGTestJSON() throws WrongTypeException, IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, FieldMismatchException, InterruptedException, ExecutionException {
+
+        String json = FileUtils.readFileToString(new File("src/test/resources/EEGTest.json"), Charset.defaultCharset());
+
+        JSONObject jsonObject = new JSONObject(json);
+        File outputFile = File.createTempFile("EEGTest__", ".json");
+        //outputFile.deleteOnExit();
+
+        JSONArray blocksArray = jsonObject.getJSONArray("blocks");
+        List<String> blockTypes = new ArrayList<>();
+        for (int i = 0; i < blocksArray.length(); i++) {
+            JSONObject blockObject = blocksArray.getJSONObject(i);
+            blockTypes.add(blockObject.getString("type"));
+        }
+        Map<Class, String> moduleSource = new HashMap<>();
+        PackageClass.assignModuleSource(moduleSource, blockTypes);
 
 
+        JSONArray jsonArray = new BlockWorkFlow(ClassLoader.getSystemClassLoader(), moduleSource, null, "src/test/resources/data", 2)
+                .execute(jsonObject, "test_result", outputFile.getAbsolutePath());
+    }
 
 
 

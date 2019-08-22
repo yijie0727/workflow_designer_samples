@@ -2,6 +2,8 @@ package cz.zcu.kiv.eeg.basil.workflow.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import cz.zcu.kiv.WorkflowDesigner.Type;
@@ -13,6 +15,8 @@ import cz.zcu.kiv.eeg.basil.data.EEGDataPackage;
 import cz.zcu.kiv.eeg.basil.data.EEGDataPackageList;
 import cz.zcu.kiv.eeg.basil.workflow.io.xdf.XdfFileData;
 import cz.zcu.kiv.eeg.basil.workflow.io.xdf.XdfReader;
+
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
 
 /**
  * Provider of the XDF file data.
@@ -37,8 +41,10 @@ public class XdfDataProviderBlock {
 	
 	@BlockProperty(name="Marker Stream Name",type = Type.STRING)
 	private String markerStreamName;
-	
-	@BlockOutput(name = "EEGData", type = "EEGDataList")
+
+	@BlockOutput(name = "EEGData", type = STREAM)
+	private PipedOutputStream eegPipeOut = new PipedOutputStream();
+
 	private EEGDataPackageList eegDataPackageList;
 	
     private XdfReader xdfReader;
@@ -55,6 +61,8 @@ public class XdfDataProviderBlock {
 
 	@BlockExecute
 	public void process() throws IOException {
+		ObjectOutputStream eegObjectOut = new ObjectOutputStream(eegPipeOut);
+
 		List<EEGDataPackage> eegDataList = new ArrayList<>();
 		if (xdfFileInputs != null)  {
 			for (File inputXdfFile: xdfFileInputs) {
@@ -68,11 +76,22 @@ public class XdfDataProviderBlock {
 					if (xdfTransformer.convertData()) { // conversion successful
 						EEGDataPackage eegData = xdfTransformer.getEEGDataPackage();
 						eegDataList.add(eegData);
+
+						eegObjectOut.writeObject(eegData);
+						eegObjectOut.flush();
+
 					}
 				}
 			}
 		}
 		this.eegDataPackageList = new EEGDataPackageList(eegDataList);
+
+		eegObjectOut.writeObject(null);
+		eegObjectOut.flush();
+
+		eegObjectOut.close();
+		eegPipeOut.close();
+
 	}
 
 	public EEGDataPackageList getEegDataPackageList() {

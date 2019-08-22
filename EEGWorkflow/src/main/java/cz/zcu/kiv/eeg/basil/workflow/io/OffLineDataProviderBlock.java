@@ -10,11 +10,15 @@ import cz.zcu.kiv.signal.ChannelInfo;
 import cz.zcu.kiv.signal.DataTransformer;
 import cz.zcu.kiv.signal.EEGDataTransformer;
 
+import java.io.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.ByteOrder;
 import java.util.*;
+
+import static cz.zcu.kiv.WorkflowDesigner.Type.STREAM;
 
 @BlockType(type="OffLineDataProvider", family = "DataProvider", runAsJar = true)
 public class OffLineDataProviderBlock implements Serializable {
@@ -24,16 +28,27 @@ public class OffLineDataProviderBlock implements Serializable {
     @BlockProperty(name = "EEG File", type = Type.FILE_ARRAY)
     private List<File> eegFileInputs;
 
-    @BlockOutput(name = "EEGData", type = "EEGDataList")
+    @BlockOutput(name = "EEGData", type = STREAM)
+    private PipedOutputStream eegPipeOut = new PipedOutputStream();
+
     private EEGDataPackageList eegDataPackageList;
 
     @BlockExecute
     public void process() throws IOException {
+
+        ObjectOutputStream eegObjectOut = new ObjectOutputStream(eegPipeOut);
+
         ArrayList<EEGDataPackage> eegDataList = new ArrayList<>();
         ByteOrder order = ByteOrder.LITTLE_ENDIAN;
         for(File eegFileInput: eegFileInputs){
             File vhdrFile = new File(eegFileInput.getParentFile().getAbsolutePath()+File.separator+eegFileInput.getName().split("\\.")[0]+VHDR_EXTENSION);
             File vmrkFile = new File(eegFileInput.getParentFile().getAbsolutePath()+File.separator+eegFileInput.getName().split("\\.")[0]+VMRK_EXTENSION);
+
+            if(!vhdrFile.exists())
+                throw new FileNotFoundException(vhdrFile.getAbsolutePath());
+
+            if(!vmrkFile.exists())
+                throw new FileNotFoundException(vmrkFile.getAbsolutePath());
 
             DataTransformer dt = new EEGDataTransformer();
 
@@ -64,8 +79,17 @@ public class OffLineDataProviderBlock implements Serializable {
             eegData.setMarkers(Arrays.asList(eegMarkers));
 
             eegDataList.add(eegData);
+
+            eegObjectOut.writeObject(eegData);
+            eegObjectOut.flush();
         }
         eegDataPackageList=new EEGDataPackageList(eegDataList);
+
+        eegObjectOut.writeObject(null);
+        eegObjectOut.flush();
+
+        eegObjectOut.close();
+        eegPipeOut.close();
     }
 
     private String getProperty(String propName, DataTransformer dt) {

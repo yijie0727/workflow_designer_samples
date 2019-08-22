@@ -11,7 +11,7 @@ import cz.zcu.kiv.eeg.basil.workflow.io.XdfDataProviderBlock;
 
 public class XdfTransformerTest {
 
-    @Test
+    //@Test
     public void textXdfTransform() throws IOException {
         XdfDataProviderBlock provider = new XdfDataProviderBlock(Arrays.asList(new File("src/test/resources/data/xdf/2.xdf")), "EEG", "psychopy_stimuli");
         provider.process();

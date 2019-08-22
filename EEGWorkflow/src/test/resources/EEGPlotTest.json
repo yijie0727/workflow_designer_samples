@@ -1,0 +1,88 @@
+{
+  "edges": [
+    {
+      "id": 1,
+      "block1": 2,
+      "connector1": [
+        "EEGData",
+        "output"
+      ],
+      "block2": 1,
+      "connector2": [
+        "EEGData",
+        "input"
+      ]
+    },
+    {
+      "id": 2,
+      "block1": 1,
+      "connector1": [
+        "EEGData",
+        "output"
+      ],
+      "block2": 3,
+      "connector2": [
+        "EEGData",
+        "input"
+      ]
+    },
+    {
+      "id": 3,
+      "block1": 3,
+      "connector1": [
+        "EEGData",
+        "output"
+      ],
+      "block2": 4,
+      "connector2": [
+        "EEGData",
+        "input"
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "id": 1,
+      "x": -277,
+      "y": -67,
+      "type": "ChannelSelection",
+      "module": "basil_bci-1.3.1-jar-with-dependencies.jar:cz.zcu.kiv",
+      "values": {
+        "channels": [
+          "Pz"
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "x": -456.1735537190083,
+      "y": -66.13223140495866,
+      "type": "OffLineDataProvider",
+      "module": "basil_bci-1.3.1-jar-with-dependencies.jar:cz.zcu.kiv",
+      "values": {
+        "EEG File": [
+          "numbers/17ZS/17ZS_14_4_2015_02.eeg"
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "x": -93.0687363636365,
+      "y": -82.3322570247934,
+      "type": "EpochExtraction",
+      "module": "basil_bci-1.3.1-jar-with-dependencies.jar:cz.zcu.kiv",
+      "values": {
+        "PreStimulus onset": "-100",
+        "PostStimulus onset": "1000"
+      }
+    },
+    {
+      "id": 4,
+      "x": 81.8248636363636,
+      "y": -50.270936363636395,
+      "type": "EEGPlot",
+      "module": "basil_bci-1.3.1-jar-with-dependencies.jar:cz.zcu.kiv",
+      "values": {}
+    }
+  ]
+}

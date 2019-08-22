@@ -50,8 +50,37 @@ public class NeuralNetClassifierBlock implements Serializable {
 		//Required Empty Default Constructor for Workflow Designer
 	}
 
+
+	public class StreamReader implements Runnable {
+	    private ObjectInputStream objectIn;
+        private List<FeatureVector> EEGDataList;
+        private String s;
+
+        public StreamReader(ObjectInputStream objectIn, List<FeatureVector> EEGDataList, String s) {
+            this.objectIn = objectIn;
+            this.EEGDataList = EEGDataList;
+            this.s = s;
+        }
+
+        @Override
+        public void run() {
+            FeatureVector fv = null;
+
+            try {
+                while ((fv = (FeatureVector) objectIn.readObject()) != null) {
+                    EEGDataList.add(fv);
+                    System.out.println(s);
+                }
+            } catch (ClassNotFoundException | IOException e) {
+                System.err.println("Failed to read feature vectors from stream: " +  e.getMessage());
+            }
+
+        }
+    }
+
+
 	@BlockExecute
-    public Object process() throws  IOException, ClassNotFoundException{
+    public Object process() throws Exception{
 
         trainingEEGData = new ArrayList<>();
         testingEEGData  = new ArrayList<>();
@@ -59,37 +88,14 @@ public class NeuralNetClassifierBlock implements Serializable {
         ObjectInputStream  testObjectIn   = new ObjectInputStream(testingPipeIn);
 
         System.out.println("before");
-        FeatureVector test = null, train = null;
-        boolean testF = true, trainF = true;
+        Thread readTest  = new Thread(new StreamReader(testObjectIn,   testingEEGData,  "receive testVector" ));
+        Thread readTrain = new Thread(new StreamReader(trainObjectIn,  trainingEEGData, "receive trainVector"));
+        readTest.start();
+        readTrain.start();
 
-        while(testF && trainF) {
-            if((test  = (FeatureVector) testObjectIn.readObject())!= null){
-                testingEEGData.add( test );
-                System.out.println("receive testVector");
-            } else {
-                testF = false;
-            }
+        readTest.join();
+        readTrain.join();
 
-            if((train  = (FeatureVector) trainObjectIn.readObject())!= null){
-                trainingEEGData.add( train );
-                System.out.println("receive trainVector");
-            } else {
-                trainF = false;
-            }
-        }
-
-        if( testF && !trainF ) {
-            while ((test  = (FeatureVector) testObjectIn.readObject())!= null) {
-                testingEEGData.add(test);
-                System.out.println("receive testVector");
-            }
-        }
-        else if ( !testF && trainF ) {
-            while((train  = (FeatureVector) trainObjectIn.readObject())!= null){
-                trainingEEGData.add( train );
-                System.out.println("receive trainVector");
-            }
-        }
 
         System.out.println("after");
 
